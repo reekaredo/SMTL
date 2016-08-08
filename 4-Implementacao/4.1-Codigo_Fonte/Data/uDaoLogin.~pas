@@ -1,0 +1,50 @@
+unit uDaoLogin;
+
+interface
+  uses Windows, Messages, SysUtils, DB, uDm, uDao, uUsuario, DBAccess, MyAccess, MemDS;
+  
+  type DaoLogin = class(Dao)
+
+  private
+  protected
+  public
+    umUsuario : Usuario;
+    constructor CrieObjeto;
+    destructor destrua_se; 
+    function sqlUsuario(pSQL: string) : Integer;
+
+end;
+implementation
+
+{ DaoLogin }
+
+constructor DaoLogin.CrieObjeto;
+begin
+    umUsuario := Usuario.crieobj;
+   inherited;
+end;
+
+destructor DaoLogin.destrua_se;
+begin
+    umUsuario.destrua_se;
+   inherited;
+end;
+
+function DaoLogin.sqlUsuario(pSQL: string): Integer;
+begin
+  umDM.SQL_usuario.Active := False;
+  umDM.SQL_usuario.SQL.Text := pSQL;
+    if not umDM.SQL_usuario.Active then
+      umDM.SQL_usuario.Open;
+
+
+  if umDM.SQL_usuario.RecordCount = 0 then
+    result :=  0
+  else
+    begin
+        result := 1;
+        umUsuario.setTipo(umDM.intgrfldSQL_usuariouser_tipo.Value);
+    end;
+end;
+
+end.

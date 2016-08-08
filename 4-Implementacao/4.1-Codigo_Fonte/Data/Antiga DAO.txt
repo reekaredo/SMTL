@@ -1,0 +1,615 @@
+unit uDao;
+// implementa a Data Acess Object que conecta a aplicação ao Database
+interface
+  uses Windows, Messages, SysUtils, DB, uDm, uPais, DBAccess,
+  MyAccess, MemDS, uEstado, uCidade, uCliente, uFornecedor, uMarca;
+  
+  type DAO = class
+
+  private
+
+  protected
+    umDM : TDataModule1;
+  public
+    constructor CrieObjeto;
+    destructor destrua_se;
+
+// ------------- MÉTODOS DE PAÍS ------------------
+    function getDSPais : TMyDataSource;
+    procedure carregaPais(pPais : pais);
+    function SalvarPais(pPais : Pais) : string;
+    function ExcluiPais(pPais : pais) : string;
+    function sqlPais(pSQL: string) : Integer;
+
+// ------------- MÉTODOS DE ESTADO ------------------    
+    function getDSEstado :  TMyDataSource;
+    procedure carregaEstado (pEstado : Estado);
+    function SalvarEstado (pEstado : Estado) : string;
+    function ExcluiEstado(pEstado : Estado) : string;
+    function sqlEstado(pSQL: string) : Integer;
+
+// ------------- MÉTODOS DE CIDADE ------------------    
+    function getDSCidade :  TMyDataSource;
+    procedure carregaCidade (pCidade : Cidade);
+    function SalvarCidade (pCidade : Cidade) : string;
+    function ExcluiCidade(pCidade : Cidade) : string;
+    function sqlCidade(pSQL: string) : Integer;
+
+// ------------- MÉTODOS DE CLIENTE ------------------
+    function getDSCliente :  TMyDataSource;
+    procedure carregaCliente (pCliente : Cliente);
+    function SalvarCliente (pCliente : Cliente) : string;
+    function ExcluiCliente(pCliente : Cliente) : string;
+    function sqlCliente(pSQL: string) : Integer;
+
+
+// ------------- MÉTODOS DE FORNECEDOR ----------------
+    function getDSFornecedor :  TMyDataSource;
+    procedure carregaFornecedor (pFornecedor : fornecedor);
+    function SalvarFornecedor (pFornecedor : fornecedor) : string;
+    function ExcluiFornecedor(pFornecedor : fornecedor) : string;
+    function sqlFornecedor(pSQL: string) : Integer;
+
+// ------------- MÉTODOS DE MARCA ------------------
+    function getDSMarca : TMyDataSource;
+    procedure carregaMarca(pMarca : Marca);
+    function SalvarMarca(pMarca : Marca) : string;
+    function ExcluiMarca(pMarca : Marca) : string;
+    function sqlMarca(pSQL: string) : Integer;
+
+end;
+
+implementation
+
+{ DAO }
+
+// ------------- CONSTRUCTOR E DESTRUCTOR ------------
+constructor DAO.CrieObjeto;
+begin
+  umDm := TDataModule1.Create(nil);
+end;
+
+destructor DAO.destrua_se;
+begin
+  umDM.Free;
+end;
+
+// ------------- MÉTODOS DE PAÍS ------------------
+procedure DAO.carregaPais(pPais: pais);
+begin
+  if not umDM.SQL_pais.Active then
+    begin
+      umDM.SQL_pais.Open;
+    end;
+  pPais.setCodigo(umDM.intgrfldSQL_paispais_id.Value);
+  pPais.setPais(umDM.strngfldSQL_paispais_nome.Value);
+  pPais.setSigla(umDM.strngfldSQL_paispais_sigla.Value);
+  pPais.setDDI(umDM.strngfldSQL_paispais_ddi.Value);
+end;
+
+function DAO.getDSPais: TMyDataSource;
+begin
+  result := umDM.ds_paises;
+end;
+
+function DAO.sqlPais(pSQL: string) : Integer;
+begin
+  umDM.SQL_pais.Active := False;
+  umDM.SQL_pais.SQL.Text := pSQL;
+    if not umDM.SQL_pais.Active then
+      umDM.SQL_pais.Open;
+
+  if umDM.SQL_pais.RecordCount = 0 then
+    result :=  0
+  else
+    result := 1;
+end;
+
+function DAO.SalvarPais(pPais: Pais) : string;
+begin
+  if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+      if not umDM.SQL_pais.Active then
+        begin
+          umDM.SQL_pais.Open;
+        end;
+
+      if pPais.getCodigo = 0 then
+        umDM.SQL_pais.Insert
+      else
+         umDM.SQL_pais.Edit;
+
+      umDM.strngfldSQL_paispais_nome.Value := pPais.getPais;
+      umDM.strngfldSQL_paispais_ddi.Value := pPais.getDDI;
+      umDM.strngfldSQL_paispais_sigla.Value := pPais.getSigla;
+      umDM.SQL_pais.Post;
+
+      Result := 'OK';
+end;
+
+function DAO.ExcluiPais(pPais: pais): string;
+begin
+  if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+      if not umDM.SQL_pais.Active then
+        begin
+          umDM.SQL_pais.Open;
+        end;
+
+      umDM.SQL_pais.Edit;
+      umDM.intgrfldSQL_paispais_id.Value := pPais.getCodigo;
+        try
+            umDM.SQL_pais.Delete;
+            Result := 'OK';
+        except
+            Result := 'NO';
+        end;
+end;
+
+
+// ------------- MÉTODOS DE ESTADO ------------------
+function DAO.SalvarEstado(pEstado: Estado): string;
+begin
+  if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+     if not umDM.SQL_estado.Active then
+        begin
+          umDM.SQL_estado.Open;
+        end;
+
+      if pEstado.getCodigo = 0 then
+        umDM.SQL_estado.Insert
+      else
+         umDM.SQL_estado.Edit;
+
+      umDM.strngfldSQL_estadoest_nome.Value := pEstado.getNomeEstado;
+      umDM.strngfldSQL_estadoest_uf.value := pEStado.getUF;
+      umDM.intgrfldSQL_estadoest_pais.Value := pEstado.getumPais.getCodigo;
+      umDM.SQL_estado.Post;
+
+      Result := 'OK';
+end;
+
+function DAO.sqlEstado(pSQL: string): Integer;
+begin
+   umDM.SQL_estado.Active := False;
+   umDM.SQL_estado.SQL.Text := pSQL;
+    if not umDM.SQL_estado.Active then
+      umDM.SQL_estado.Open;
+
+  if umDM.SQL_estado.RecordCount = 0 then
+    result :=  0
+  else
+    result := 1;
+end;
+
+function DAO.getDSEstado: TMyDataSource;
+begin
+  Result := umDM.ds_estados;
+end;
+
+function DAO.ExcluiEstado(pEstado: Estado): string;
+begin
+   if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+      if not umDM.SQL_estado.Active then
+        begin
+          umDM.SQL_estado.Open;
+        end;
+
+      umDM.SQL_estado.Edit;
+      umDM.intgrfldSQL_estadoest_id.Value := pEstado.getCodigo;
+          Try
+              umDM.SQL_estado.Delete;
+              Result := 'OK';
+          except
+              Result := 'NO';
+          end;
+end;
+
+procedure DAO.carregaEstado(pEstado: Estado);
+var inteiro: string;
+begin
+    if not umDM.SQL_estado.Active then
+        umDM.SQL_estado.Open;
+    pEstado.setCodigo(umDM.intgrfldSQL_estadoest_id.Value);
+    pEstado.setNomeEstado(umDM.strngfldSQL_estadoest_nome.Value);
+    pEstado.setUF(umDM.strngfldSQL_estadoest_uf.Value);
+    pEstado.getumPais.setCodigo(umDM.intgrfldSQL_estadoest_pais.Value);
+    inteiro :=  InttoStr(umDM.intgrfldSQL_estadoest_pais.Value);
+
+    umDM.SQL_pais.Active := False;
+    umDM.SQL_pais.SQL.Text := 'select * from paises where pais_id = ' + inteiro ;
+    if not umDM.SQL_pais.Active then
+      umDM.SQL_pais.Open;
+
+    pEstado.getumPais.setPais(umDM.strngfldSQL_paispais_nome.Value);
+
+    umDM.SQL_pais.Active := False;
+    umDM.SQL_pais.SQL.Text := 'select * from paises';
+    if not umDM.SQL_pais.Active then
+      umDM.SQL_pais.Open;
+end;
+
+
+// ------------- MÉTODOS DE CIDADE ------------------
+procedure DAO.carregaCidade(pCidade: Cidade);
+var inteiro : string;
+begin
+    if not umDM.SQL_cidade.Active then
+        umDM.SQL_cidade.Open;
+
+    pCidade.setCodigo(umDM.intgrfldSQL_cidadecid_id.Value);
+    pCidade.setCidade(umDM.strngfldSQL_cidadecid_nome.Value);
+    pCidade.setDDD(umDM.strngfldSQL_cidadecid_ddd.Value);
+    pCidade.getUmEstado.setCodigo(umDM.intgrfldSQL_cidadecid_estado.Value);
+
+    inteiro :=  InttoStr(umDM.intgrfldSQL_cidadecid_estado.Value);
+
+    umDM.SQL_estado.Active := False;
+    umDM.SQL_estado.SQL.Text := 'select * from estados where est_id = ' + inteiro ;
+    if not umDM.SQL_estado.Active then
+      umDM.SQL_estado.Open;
+
+    pCidade.getUmEstado.setNomeEstado(umDM.strngfldSQL_estadoest_nome.Value);
+
+    umDM.SQL_estado.Active := False;
+    umDM.SQL_estado.SQL.Text := 'select * from estados';
+    if not umDM.SQL_estado.Active then
+      umDM.SQL_estado.Open;
+end;
+
+function DAO.SalvarCidade(pCidade: Cidade): string;
+begin
+  if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+    if not umDM.SQL_cidade.Active then
+        begin
+          umDM.SQL_cidade.Open;
+        end;
+
+    if pCidade.getCodigo = 0 then
+        umDM.SQL_cidade.Insert
+      else
+         umDM.SQL_cidade.Edit;
+
+      umDM.strngfldSQL_cidadecid_nome.Value := pCidade.getCidade;
+      umDM.strngfldSQL_cidadecid_ddd.Value := pCidade.getDDD;
+      umDM.intgrfldSQL_cidadecid_estado.Value := pCidade.getumEstado.getCodigo;
+      umDM.SQL_cidade.Post;
+
+      Result := 'OK';
+end;
+
+function DAO.sqlCidade(pSQL: string): Integer;
+begin
+   umDM.SQL_cidade.Active := False;
+   umDM.SQL_cidade.SQL.Text := pSQL;
+    if not umDM.SQL_cidade.Active then
+      umDM.SQL_cidade.Open;
+
+  if umDM.SQL_cidade.RecordCount = 0 then
+    result :=  0
+  else
+    result := 1;
+end;
+
+function DAO.getDSCidade: TMyDataSource;
+begin
+  Result := umDM.ds_cidades;
+end;
+
+function DAO.ExcluiCidade(pCidade: Cidade): string;
+begin
+   if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+      if not umDM.SQL_cidade.Active then
+        begin
+          umDM.SQL_cidade.Open;
+        end;
+
+      umDM.SQL_cidade.Edit;
+      umDM.intgrfldSQL_cidadecid_id.Value := pCidade.getCodigo;
+         Try
+            umDM.SQL_cidade.Delete;
+            Result := 'OK';
+         except
+            Result := 'NO';
+         end;
+end;
+
+
+// ------------- MÉTODOS DE CLIENTE ------------------
+procedure DAO.carregaCliente(pCliente: Cliente);
+var inteiro : string;
+begin
+    if not umDM.SQL_cliente.Active then
+        umDM.SQL_cliente.Open;
+
+    pCliente.setCodigo(umDM.intgrfldSQL_clientecli_id.Value);
+    pCliente.setNome(umDM.strngfldSQL_clientecli_nome.Value);
+    pCliente.setCPF(umDM.strngfldSQL_clientecli_cpf.Value);
+    pCliente.setSexo(umDM.strngfldSQL_clientecli_sexo.Value);
+    pCliente.setTelFixo(umDM.strngfldSQL_clientecli_telfixo.Value);
+    pCliente.setCelular(umDM.strngfldSQL_clientecli_celular.Value);
+    pCliente.setLogradouro(umDM.strngfldSQL_clientecli_logradouro.Value);
+    pCliente.setNumero(IntToStr(umDM.intgrfldSQL_clientecli_numero.Value));
+    pCliente.setBairro(umDM.strngfldSQL_clientecli_bairro.Value);
+    pCliente.getUmaCidade.setCodigo(umDM.intgrfldSQL_clientecli_cidade.Value);
+
+    inteiro :=  InttoStr(umDM.intgrfldSQL_clientecli_cidade.Value);
+
+    umDM.SQL_cidade.Active := False;
+    umDM.SQL_cidade.SQL.Text := 'select * from cidades where cid_id = ' + inteiro ;
+      if not umDM.SQL_cidade.Active then
+        umDM.SQL_cidade.Open;
+
+    pCliente.getUmaCidade.setCidade(umDM.strngfldSQL_cidadecid_nome.Value);
+
+    umDM.SQL_cidade.Active := False;
+    umDM.SQL_cidade.SQL.Text := 'select * from cidades';
+      if not umDM.SQL_cidade.Active then
+        umDM.SQL_cidade.Open;
+end; 
+
+function DAO.ExcluiCliente(pCliente: Cliente): string;
+begin
+   if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+      if not umDM.SQL_cliente.Active then
+        begin
+          umDM.SQL_cliente.Open;
+        end;
+
+      umDM.SQL_cliente.Edit;
+      umDM.intgrfldSQL_clientecli_id.Value := pCliente.getCodigo;
+       Try
+          umDM.SQL_cliente.Delete;
+          Result := 'OK';
+       except
+          Result := 'NO';
+       end;
+end;
+
+function DAO.getDSCliente: TMyDataSource;
+begin
+  Result := umDM.ds_clientes;
+end;
+
+function DAO.SalvarCliente(pCliente: Cliente): string;
+begin
+     if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+     if not umDM.SQL_cliente.Active then
+        begin
+          umDM.SQL_cliente.Open;
+        end;
+
+      if pCliente.getCodigo = 0 then
+        umDM.SQL_cliente.Insert
+      else
+         umDM.SQL_cliente.Edit;
+
+    umDM.strngfldSQL_clientecli_nome.Value := pCliente.getNome;
+    umDM.strngfldSQL_clientecli_cpf.Value  := pCliente.getCPF;
+    umDM.strngfldSQL_clientecli_sexo.Value := pCliente.getSexo;
+    umDM.strngfldSQL_clientecli_telfixo.Value := pCliente.getTelFixo;
+    umDM.strngfldSQL_clientecli_celular.Value := pCliente.getCelular;
+    umDM.strngfldSQL_clientecli_logradouro.Value  := pCliente.getLogradouro;
+    umDM.intgrfldSQL_clientecli_numero.Value := StrToInt(pCliente.getNumero);
+    umDM.strngfldSQL_clientecli_bairro.Value := pCliente.getBairro;
+    umDM.intgrfldSQL_clientecli_cidade.Value := pCliente.getUmaCidade.getCodigo;
+
+    umDM.SQL_cliente.Post;
+    Result := 'OK';
+end;
+
+function DAO.sqlCliente(pSQL: string): Integer;
+begin
+   umDM.SQL_cliente.Active := False;
+   umDM.SQL_cliente.SQL.Text := pSQL;
+    if not umDM.SQL_cliente.Active then
+      umDM.SQL_cliente.Open;
+
+  if umDM.SQL_cliente.RecordCount = 0 then
+    result :=  0
+  else
+    result := 1;
+end;
+
+//--------------- MÉTODOS DE FORNECEDOR--------------------
+procedure DAO.carregaFornecedor(pFornecedor: fornecedor);
+var inteiro : string;
+begin
+    if not umDM.SQL_fornecedor.Active then
+        umDM.SQL_fornecedor.Open;
+
+    pFornecedor.setCodigo(umDM.intgrfldSQL_fornecedorfor_id.Value);
+    pFornecedor.setNome(umDM.strngfldSQL_fornecedorfor_nome.Value);
+    pFornecedor.setFone1(umDM.strngfldSQL_fornecedorfor_fone1.Value);
+    pFornecedor.setFone2(umDM.strngfldSQL_fornecedorfor_fone2.Value);
+    pFornecedor.setEmail(umDM.strngfldSQL_fornecedorfor_email.Value);
+    pFornecedor.getUmaCidade.setCodigo(umDM.intgrfldSQL_fornecedorfor_cidade.Value);
+
+    inteiro :=  InttoStr(umDM.intgrfldSQL_fornecedorfor_cidade.Value);
+
+    umDM.SQL_cidade.Active := False;
+    umDM.SQL_cidade.SQL.Text := 'select * from cidades where cid_id = ' + inteiro ;
+      if not umDM.SQL_cidade.Active then
+        umDM.SQL_cidade.Open;
+
+    pFornecedor.getUmaCidade.setCidade(umDM.strngfldSQL_cidadecid_nome.Value);
+
+    umDM.SQL_cidade.Active := False;
+    umDM.SQL_cidade.SQL.Text := 'select * from cidades';
+      if not umDM.SQL_cidade.Active then
+        umDM.SQL_cidade.Open;
+end;
+
+function DAO.ExcluiFornecedor(pFornecedor: fornecedor): string;
+begin
+   if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+      if not umDM.SQL_fornecedor.Active then
+        begin
+          umDM.SQL_fornecedor.Open;
+        end;
+
+      umDM.SQL_fornecedor.Edit;
+      umDM.intgrfldSQL_fornecedorfor_id.Value := pFornecedor.getCodigo;
+       Try
+          umDM.SQL_fornecedor.Delete;
+          Result := 'OK';
+       except
+          Result := 'NO';
+       end;
+end;
+
+function DAO.getDSFornecedor: TMyDataSource;
+begin
+    Result := umDM.ds_fornecedores;
+end;
+
+function DAO.SalvarFornecedor(pFornecedor: fornecedor): string;
+begin
+     if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+     if not umDM.SQL_fornecedor.Active then
+        begin
+          umDM.SQL_fornecedor.Open;
+        end;
+
+      if pFornecedor.getCodigo = 0 then
+        umDM.SQL_fornecedor.Insert
+      else
+         umDM.SQL_fornecedor.Edit;  
+
+    umDM.strngfldSQL_fornecedorfor_nome.Value  := pFornecedor.getNome;
+    umDM.strngfldSQL_fornecedorfor_fone1.Value := pFornecedor.getFone1;
+    umDM.strngfldSQL_fornecedorfor_fone2.Value := pFornecedor.getFone2;
+    umDM.strngfldSQL_fornecedorfor_email.Value := pFornecedor.getEmail;
+    umDM.intgrfldSQL_fornecedorfor_cidade.Value:= pFornecedor.getUmaCidade.getCodigo;
+
+    umDM.SQL_fornecedor.Post;
+    Result := 'OK';
+end;
+
+function DAO.sqlFornecedor(pSQL: string): Integer;
+begin
+   umDM.SQL_fornecedor.Active := False;
+   umDM.SQL_fornecedor.SQL.Text := pSQL;
+    if not umDM.SQL_fornecedor.Active then
+      umDM.SQL_fornecedor.Open;
+
+  if umDM.SQL_fornecedor.RecordCount = 0 then
+    result :=  0
+  else
+    result := 1;
+end;
+
+// ----------------- MÉTODOS DE MARCA -------------------------
+procedure DAO.carregaMarca(pMarca: Marca);
+begin
+  if not umDM.SQL_marca.Active then
+    begin
+      umDM.SQL_marca.Open;
+    end;
+  pMarca.setCodigo(umDM.intgrfldSQL_marcamarca_id.Value);
+  pMarca.setNome(umDM.strngfldSQL_marcamarca_nome.Value);
+end;
+
+function DAO.ExcluiMarca(pMarca: Marca): string;
+begin
+  if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+      if not umDM.SQL_marca.Active then
+        begin
+          umDM.SQL_marca.Open;
+        end;
+
+      umDM.SQL_marca.Edit;
+      umDM.intgrfldSQL_marcamarca_id.Value := pMarca.getCodigo;
+
+        try
+            umDM.SQL_marca.Delete;
+            Result := 'OK';
+        except
+            Result := 'NO';
+        end;
+end;
+
+function DAO.getDSMarca: TMyDataSource;
+begin
+  Result := umDM.ds_marcas;
+end;
+
+function DAO.SalvarMarca(pMarca: Marca): string;
+begin
+  if not umDM.con_banco.Connected then
+    begin
+      umDM.con_banco.Connected := True;
+    end;
+
+      if not umDM.SQL_marca.Active then
+        begin
+          umDM.SQL_marca.Open;
+        end;
+
+      if pMarca.getCodigo = 0 then
+        umDM.SQL_marca.Insert
+      else
+         umDM.SQL_marca.Edit;
+         
+      umDM.strngfldSQL_marcamarca_nome.Value := pMarca.getNome;
+      umDM.SQL_marca.Post;
+      Result := 'OK';
+end;
+
+function DAO.sqlMarca(pSQL: string): Integer;
+begin
+  umDM.SQL_marca.Active := False;
+  umDM.SQL_marca.SQL.Text := pSQL;
+    if not umDM.SQL_marca.Active then
+      umDM.SQL_marca.Open;
+
+  if umDM.SQL_marca.RecordCount = 0 then
+    result :=  0
+  else
+    result := 1;
+end;
+
+end.
+
