@@ -1,0 +1,19 @@
+unit uCompra;
+
+interface
+uses uPai, uForma;
+
+  type Compra = class(Pai)
+
+  private
+
+  protected
+     numeroNota: integer;
+     
+  public
+end;
+
+implementation
+
+end.
+ 

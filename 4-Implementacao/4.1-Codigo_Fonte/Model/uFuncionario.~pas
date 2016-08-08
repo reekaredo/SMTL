@@ -1,0 +1,214 @@
+unit uFuncionario;
+
+interface
+uses uCidade;
+  type Funcionario = class
+
+  private
+
+  protected
+    codigo : integer;
+    CPF : string[15];
+    sexo       : string[1];
+    nome   : string[50];
+    telfixo: string[20];
+    celular: string[20];
+    logradouro : string[50];
+    numero     : string[5];
+    bairro     : string[50];
+    umaCidade  : Cidade;
+    dataInclusao : TDateTime;
+    cargo: string;
+    salario: Real;
+
+  public
+    constructor crieobj;
+    destructor destrua_se;
+
+    procedure setCargo    (pCargo     : string);
+    function getCargo     : string;
+
+    procedure setSalario (pSalario : Real);
+    function getSalario : Real;
+
+    procedure setDataI (pData : TDateTime);
+    function getDataI : TDateTime;
+
+    procedure setCodigo (pCodigo : integer);
+    function getCodigo : integer;    
+
+    procedure setSexo    (pSexo     : string);
+    function getSexo     : string;
+
+    procedure setCPF(pCPF : string);
+    function getCPF : string;
+
+    procedure setNome(pNome : string);
+    function getNome : string;
+
+    procedure setTelFixo(pTel : string);
+    function getTelFixo : string;
+
+    procedure setCelular(pCelular : string);
+    function getCelular : string;
+
+    procedure setNumero(pNumero : string);
+    function getNumero : string;
+
+    procedure setBairro(pBairro : string);
+    function getBairro : string;
+
+    procedure setUmaCidade(pUmaCidade : Cidade);
+    function getUmaCidade : Cidade;
+
+    procedure setLogradouro(pLogradouro : string);
+    function getLogradouro : string;
+end;
+
+implementation
+
+{ Funcionario }
+
+constructor Funcionario.crieobj;
+begin
+  codigo := 0;
+  CPF := '';
+  umaCidade := Cidade.crieobj;
+end;
+
+destructor Funcionario.destrua_se;
+begin
+  umaCidade.destrua_se;
+end;
+
+function Funcionario.getBairro: string;
+begin
+   Result := self.bairro;
+end;
+
+function Funcionario.getCargo: string;
+begin
+  Result := self.cargo;
+end;
+
+function Funcionario.getCelular: string;
+begin
+   Result := self.celular;
+end;
+
+function Funcionario.getCodigo: integer;
+begin
+ Result := self.codigo;
+end;
+
+function Funcionario.getCPF: string;
+begin
+  Result := self.CPF;
+end;
+
+function Funcionario.getDataI: TDateTime;
+begin
+   Result := self.dataInclusao;
+end;
+
+function Funcionario.getLogradouro: string;
+begin
+  Result := self.logradouro;
+end;
+
+function Funcionario.getNome: string;
+begin
+     Result := self.nome;
+end;
+
+function Funcionario.getNumero: string;
+begin
+  Result := self.numero;
+end;
+
+function Funcionario.getSalario: Real;
+begin
+   Result := self.salario;
+end;
+
+function Funcionario.getSexo: string;
+begin
+  Result := self.sexo;
+end;
+
+function Funcionario.getTelFixo: string;
+begin
+  Result := self.telfixo;
+end;
+
+function Funcionario.getUmaCidade: Cidade;
+begin
+   Result := Self.umaCidade;
+end;
+
+procedure Funcionario.setBairro(pBairro: string);
+begin
+  self.bairro := pBairro;
+end;
+
+procedure Funcionario.setCargo(pCargo: string);
+begin
+  self.cargo := pCargo;
+end;
+
+procedure Funcionario.setCelular(pCelular: string);
+begin
+  self.celular := pCelular;
+end;
+
+procedure Funcionario.setCodigo(pCodigo: integer);
+begin
+  self.codigo := pCodigo;
+end;
+
+procedure Funcionario.setCPF(pCPF: string);
+begin
+  self.CPF := pCPF;
+end;
+
+procedure Funcionario.setDataI(pData: TDateTime);
+begin
+  self.dataInclusao := pData;
+end;
+
+procedure Funcionario.setLogradouro(pLogradouro: string);
+begin
+  self.logradouro := pLogradouro;
+end;
+
+procedure Funcionario.setNome(pNome: string);
+begin
+  Self.nome := pNome;
+end;
+
+procedure Funcionario.setNumero(pNumero: string);
+begin
+  Self.numero := pNumero;
+end;
+
+procedure Funcionario.setSalario(pSalario: integer);
+begin
+
+end;
+
+procedure Funcionario.setSexo(pSexo: string);
+begin
+  self.sexo := pSexo;
+end;
+
+procedure Funcionario.setTelFixo(pTel: string);
+begin
+  self.telfixo := pTel;
+end;
+
+procedure Funcionario.setUmaCidade(pUmaCidade: Cidade);
+begin
+   self.umaCidade := pUmaCidade;
+end;
+
+end.
