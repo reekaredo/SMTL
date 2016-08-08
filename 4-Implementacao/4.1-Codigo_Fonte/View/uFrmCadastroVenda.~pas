@@ -1,0 +1,56 @@
+unit uFrmCadastroVenda;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, uFrmCadastroPai, StdCtrls, ComCtrls, Buttons;
+
+type
+  TFrmCadastroVenda = class(TFrmCadastroPai)
+    lbl_nome: TLabel;
+    lbl_1: TLabel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    edt_nome: TEdit;
+    edt_barras: TEdit;
+    edt_unidade: TEdit;
+    edt_referencia: TEdit;
+    Label1: TLabel;
+    Edit1: TEdit;
+    lbl_12: TLabel;
+    edt_codFornecedor: TEdit;
+    edt_Fornecedor: TEdit;
+    btn_buscar1: TButton;
+    Label2: TLabel;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Button1: TButton;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Edit6: TEdit;
+    Label6: TLabel;
+    Edit7: TEdit;
+    Button2: TButton;
+    Label7: TLabel;
+    Edit8: TEdit;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    ListView1: TListView;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmCadastroVenda: TFrmCadastroVenda;
+
+implementation
+
+{$R *.dfm}
+
+end.

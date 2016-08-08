@@ -1,0 +1,203 @@
+unit uFrmCadastroUsuario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, uFrmCadastroPai, StdCtrls, uUsuario, uController, uFrmConsultaFuncionario;
+
+type
+  TFrmCadastroUsuario = class(TFrmCadastroPai)
+    lbl_pais: TLabel;
+    lbl__sigla: TLabel;
+    lbl__DDI: TLabel;
+    edt_nome: TEdit;
+    edt__login: TEdit;
+    edt__senha: TEdit;
+    lbl_1: TLabel;
+    combo_tipoUsuario: TComboBox;
+    lbl_2: TLabel;
+    lbl_3: TLabel;
+    lbl1: TLabel;
+    edt_codFuncionario: TEdit;
+    edt_Funcionario: TEdit;
+    btn_buscar: TButton;
+    procedure btn_buscarClick(Sender: TObject);
+  private
+    { Private declarations }
+    umUsuario : Usuario;
+    umController : controller;
+    umFrmConsultaFuncionario : TFrmConsultaFuncionario;
+  protected
+    procedure Sair;  override;
+    procedure Salvar; override;
+    procedure CarregaEdit; override;
+    procedure LimparCampos; override;
+    function validaCampos: Boolean;
+  public
+    { Public declarations }
+        procedure ConhecaObj(pObj : TObject; pController: controller); override;
+        procedure SetConsultaFuncionario (pObj : TForm);
+        procedure DesabilitaCampos;
+        procedure HabilitaCampos;
+  end;
+
+var
+  FrmCadastroUsuario: TFrmCadastroUsuario;
+
+implementation
+
+{$R *.dfm}
+
+{ TFrmCadastroUsuario }
+
+procedure TFrmCadastroUsuario.CarregaEdit;
+begin
+  self.edt_cod.Text := IntToStr(umUsuario.getCodigo);
+  Self.edt_nome.Text := umUsuario.getNome;
+  self.edt__login.Text := umUsuario.getLogin;
+  self.edt__senha.Text := umUsuario.getSenha;
+  Self.combo_tipoUsuario.ItemIndex := umUsuario.getTipo;
+  self.edt_codFuncionario.Text := IntToStr(umUsuario.getfuncionario.getCodigo);
+  self.edt_Funcionario.Text := umUsuario.getFuncionario.getNome;
+end;
+
+procedure TFrmCadastroUsuario.ConhecaObj(pObj: TObject;
+  pController: controller);
+begin
+  umUsuario := Usuario (pObj);
+  umController := pController;
+  self.LimparCampos;
+    if umUsuario.getCodigo <> 0 then
+        self.CarregaEdit;
+
+    if btn_salvar.Caption = '&Salvar' then
+        self.HabilitaCampos
+    else
+        DesabilitaCampos;
+end;
+
+procedure TFrmCadastroUsuario.DesabilitaCampos;
+begin
+    self.edt_nome.Enabled := False;
+    self.edt__login.Enabled := False;
+    Self.edt__senha.Enabled := False;
+    Self.combo_tipoUsuario.Enabled := false;
+end;
+
+procedure TFrmCadastroUsuario.HabilitaCampos;
+begin
+    self.edt_nome.Enabled := True;
+    self.edt__login.Enabled := True;
+    Self.edt__senha.Enabled := True;
+    Self.combo_tipoUsuario.Enabled := True;
+end;
+
+procedure TFrmCadastroUsuario.LimparCampos;
+begin
+  self.edt_cod.Clear;
+  Self.edt_nome.Clear;
+  self.edt__login.Clear;
+  self.edt__senha.Clear;
+  self.combo_tipoUsuario.ItemIndex := 0;
+  self.edt_codFuncionario.Clear;
+  self.edt_Funcionario.Clear;
+end;
+
+procedure TFrmCadastroUsuario.Sair;
+begin
+  inherited; 
+end;
+
+procedure TFrmCadastroUsuario.Salvar;
+var incluido, userI, aux, excluido : string;
+selected : integer;
+men : TForm;
+begin
+    if Self.btn_salvar.Caption = '&Salvar' then
+        begin
+              if (self.edt_nome.Text  = '') or (self.edt__login.Text = '')
+              or (self.edt__senha.Text  = '') or (edt_Funcionario.Text = '') then
+              begin
+                 ShowMessage('Há campos obrigatórios em branco');
+                 self.edt_nome.SetFocus;
+              end
+            else
+                begin
+                    umUsuario.setNome(self.edt_nome.Text);
+                    umUsuario.setLogin(self.edt__login.Text);
+                    umUsuario.setSenha(self.edt__senha.Text);
+                    umUsuario.setTipo(combo_tipoUsuario.ItemIndex);
+
+                    incluido := umController.getcontrollerUsuario.salvaUsuario(umUsuario);
+                    userI := umUsuario.getNome;
+                       if incluido = 'OK' then
+                          if umUsuario.getCodigo = 0 then
+                            ShowMessage(userI + ' incluído com sucesso!')
+                          else
+                            ShowMessage(userI + ' alterado com sucesso!');
+                    inherited;
+                end;
+        end
+        else
+            begin
+               aux := umUsuario.getNome;
+               men := CreateMessageDialog('Deseja mesmo excluir o usuário ' + QuotedStr(aux) + '?',mtCustom,[mbYes,mbAbort]);
+               men.Caption := 'Confirmação';
+               men.Position := poDesktopCenter;
+               selected := men.ShowModal;
+                if selected = mrYes then
+                  begin
+                      excluido :=  umController.getcontrollerUsuario.excluiUsuario(umUsuario);
+                      if excluido = 'OK' then
+                          ShowMessage(QuotedStr(aux) + ' excluído com sucesso!')
+                      else
+                          Showmessage('Não foi possível excluir o usuário');
+                  inherited;
+                  end;
+            end;
+end;
+
+procedure TFrmCadastroUsuario.SetConsultaFuncionario(pObj: TForm);
+begin
+   umFrmConsultaFuncionario := TFrmConsultaFuncionario (pObj);
+end;
+
+procedure TFrmCadastroUsuario.btn_buscarClick(Sender: TObject);
+begin
+  umFrmConsultaFuncionario.ConhecaObj(umUsuario.getFuncionario, umController);
+  umFrmConsultaFuncionario.btn_Sair.Caption := 'Selecionar';
+  umFrmConsultaFuncionario.ShowModal;
+  self.edt_codFuncionario.Text := InttoStr(umUsuario.getfuncionario.getCodigo);
+  self.edt_Funcionario.Text := umUsuario.getFuncionario.getNome;
+  umFrmConsultaFuncionario.btn_Sair.Caption := 'Sair';
+end;
+
+function TFrmCadastroUsuario.validaCampos: Boolean;
+begin
+         Result := False;
+              if (self.edt_nome.Text  = '') then
+                  begin
+                     ShowMessage('O nome de usuário é obrigatório!');
+                     self.edt_nome.SetFocus;
+                  end
+              else if (self.edt__login.Text = '') then
+                  begin
+                     ShowMessage('O login do usuário é obrigatório!');
+                     self.edt__login.SetFocus;
+                  end
+              else if (self.edt__senha.Text  = '') then
+                  begin
+                     ShowMessage('A senha do usuário é obrigatória!');
+                     self.edt__senha.SetFocus;
+                  end
+              else if (edt_Funcionario.Text = '') then
+                  begin
+                     ShowMessage('O funcionário para este usuário é obrigatório!');
+                     self.btn_buscar.SetFocus;
+                  end
+              else
+                  Result:= True;
+end;
+
+end.

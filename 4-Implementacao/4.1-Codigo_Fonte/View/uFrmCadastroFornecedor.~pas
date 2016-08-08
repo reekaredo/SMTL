@@ -1,0 +1,520 @@
+unit uFrmCadastroFornecedor;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, uFrmCadastroPai, StdCtrls,uFornecedor, uController, uFrmConsultaCidade,
+  uFrmConsultaCondicao, Mask, XPMan;
+
+type
+  TFrmCadastroFornecedor = class(TFrmCadastroPai)
+    lbl_nome: TLabel;
+    edt_nome: TEdit;
+    lbl_fone1: TLabel;
+    lbl_fone2: TLabel;
+    lbl_email: TLabel;
+    edt_email: TEdit;
+    lbl_cidade: TLabel;
+    edt_codCidade: TEdit;
+    edt_cidade: TEdit;
+    btn_buscar: TButton;
+    btn_habilitar: TButton;
+    lbl1: TLabel;
+    edt_representante: TEdit;
+    lbl2: TLabel;
+    edt_fone2: TMaskEdit;
+    edt_fone1: TMaskEdit;
+    edt_telRepresentante: TMaskEdit;
+    label_1: TLabel;
+    edt_nomeFantasia: TEdit;
+    label_logradouro: TLabel;
+    label_numero: TLabel;
+    label_bairro: TLabel;
+    label_complemento: TLabel;
+    edt_logradouro: TEdit;
+    edt_numero: TEdit;
+    edt_bairro: TEdit;
+    edt_complemento: TEdit;
+    label_cep: TLabel;
+    edt_CEP: TMaskEdit;
+    label_cpf: TLabel;
+    label_RG: TLabel;
+    label_condicao: TLabel;
+    edt_cpf: TMaskEdit;
+    edt_RG: TEdit;
+    edt_codCondicao: TEdit;
+    edt_Condicao: TEdit;
+    btn_buscar2: TButton;
+    label_dataInclusao: TLabel;
+    label_dataAlteracao: TLabel;
+    edt_data: TEdit;
+    edt_dataAlteracao: TEdit;
+    procedure btn_buscarClick(Sender: TObject);
+    procedure btn_habilitarClick(Sender: TObject);
+    procedure btn_buscar2Click(Sender: TObject);
+    procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+    procedure edt_fone1KeyPress(Sender: TObject; var Key: Char);
+    procedure edt_fone2KeyPress(Sender: TObject; var Key: Char);
+    procedure edt_telRepresentanteKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+    umFornecedor : fornecedor;
+    umFrmConsultaCidade : TFrmConsultaCidade;
+    umFrmConsultacondicao: TFrmConsultaCondicao;
+  protected
+        umController : controller;
+        procedure Sair;  override;
+        procedure Salvar; override;
+        procedure CarregaEdit; override;
+        procedure LimparCampos; override;
+        function validaCampos: Boolean;
+        function isCNPJ(CNPJ: string): boolean;
+        function isNumerico(texto: string): Boolean;             
+  public
+    { Public declarations }
+        procedure ConhecaObj(pObj : TObject; pController: controller); override;
+        procedure SetConsultaCidade (pObj : TForm);
+        procedure SetConsultaCondicao (pObj : TForm);        
+        procedure DesabilitaCampos;
+        procedure HabilitaCampos;        
+  end;
+
+var
+  FrmCadastroFornecedor: TFrmCadastroFornecedor;
+
+implementation
+
+uses uCidade;
+
+{$R *.dfm}
+
+{ TFrmCadastroFornecedor }
+
+procedure TFrmCadastroFornecedor.CarregaEdit;
+begin
+  self.edt_cod.Text := IntToStr(umFornecedor.getCodigo);
+  Self.edt_nome.Text := umFornecedor.getNome;
+  self.edt_fone1.Text := umFornecedor.getFone1;
+  self.edt_fone2.Text := umFornecedor.getFone2;
+  Self.edt_email.Text := umFornecedor.getEmail;
+  self.edt_representante.Text := umFornecedor.getRepresentante;
+  self.edt_telRepresentante.Text := umFornecedor.getFoneRepresentante;
+  self.edt_codCidade.Text := IntToStr(umFornecedor.getUmaCidade.getCodigo);
+  self.edt_cidade.Text := umFornecedor.getUmaCidade.getCidade;
+
+  self.edt_nomeFantasia.Text := umFornecedor.getnomeFantasia;
+  self.edt_logradouro.Text := umFornecedor.getlogradouro;
+  Self.edt_numero.Text := umFornecedor.getnumero;
+  Self.edt_complemento.Text := umFornecedor.getcomplemento;
+  self.edt_bairro.Text := umFornecedor.getbairro;
+  self.edt_CEP.Text := umFornecedor.getCEP;
+  self.edt_cpf.Text := umFornecedor.getCNPJ;
+  self.edt_RG.Text := umFornecedor.getInscEst;
+  Self.edt_Condicao.Text := umFornecedor.getCondicao.getNome;
+  Self.edt_codCondicao.Text := IntToStr(umFornecedor.getCondicao.getCodigo);
+  self.edt_data.Text := DateToStr(umFornecedor.getDataInclusao);
+  self.edt_dataAlteracao.Text := DateToStr(umFornecedor.getDataAlteracao);
+end;
+
+procedure TFrmCadastroFornecedor.ConhecaObj(pObj: TObject;
+  pController: controller);
+begin
+  umFornecedor := fornecedor (pObj);
+  umController := pController;
+    Self.LimparCampos;
+    self.edt_data.Text := DateToStr(Date);
+    self.edt_dataAlteracao.Text := DateToStr(Date);    
+      if umFornecedor.getCodigo <> 0 then
+                begin
+                  Self.CarregaEdit;
+                end;
+      if self.btn_salvar.Caption = '&Salvar' then
+          HabilitaCampos
+      else
+          DesabilitaCampos;
+end;
+
+procedure TFrmCadastroFornecedor.DesabilitaCampos;
+begin
+  Self.edt_nome.Enabled := False;
+  self.edt_fone1.Enabled := False;
+  self.edt_fone2.Enabled := False;
+  Self.edt_email.Enabled := False;
+  self.btn_buscar.Enabled := False;
+  self.edt_representante.Enabled := False;
+  self.edt_telRepresentante.Enabled := False;
+
+  self.edt_nomeFantasia.Enabled := False;
+  self.edt_logradouro.Enabled := False;
+  Self.edt_numero.Enabled := False;
+  Self.edt_complemento.Enabled := False;
+  self.edt_bairro.Enabled := False;
+  self.edt_CEP.Enabled := False;
+  self.edt_cpf.Enabled := False;
+  self.edt_RG.Enabled := False;
+  btn_buscar2.Enabled := false;
+end;
+
+procedure TFrmCadastroFornecedor.HabilitaCampos;
+begin
+  Self.edt_nome.Enabled := True;
+  self.edt_fone1.Enabled := True;
+  self.edt_fone2.Enabled := True;
+  Self.edt_email.Enabled := True;
+  self.btn_buscar.Enabled := True;
+  self.edt_representante.Enabled := True;
+  self.edt_telRepresentante.Enabled := True;
+  self.edt_nomeFantasia.Enabled := True;
+  self.edt_logradouro.Enabled := True;
+  Self.edt_numero.Enabled := True;
+  Self.edt_complemento.Enabled := True;
+  self.edt_bairro.Enabled := True;
+  self.edt_CEP.Enabled := True;
+  self.edt_cpf.Enabled := True;
+  self.edt_RG.Enabled := True;
+end;
+
+procedure TFrmCadastroFornecedor.LimparCampos;
+begin
+  self.edt_cod.Clear;
+  Self.edt_nome.Clear;
+  self.edt_fone1.Clear;
+  self.edt_fone2.Clear;
+  Self.edt_email.Clear;
+  self.edt_codCidade.Clear;
+  self.edt_cidade.Clear;
+  self.edt_representante.Clear;
+  self.edt_telRepresentante.Clear;
+  self.edt_nomeFantasia.Clear;
+  self.edt_logradouro.Clear;
+  Self.edt_numero.Clear;
+  Self.edt_complemento.Clear;
+  self.edt_bairro.Clear;
+  self.edt_CEP.Clear;
+  self.edt_cpf.Clear;
+  self.edt_RG.Clear;
+  Self.edt_Condicao.Clear;
+  Self.edt_codCondicao.Clear;
+  self.edt_data.Clear;
+  self.edt_dataAlteracao.Clear;
+end;
+
+procedure TFrmCadastroFornecedor.Sair;
+begin
+  inherited;
+end;
+
+procedure TFrmCadastroFornecedor.Salvar;
+var incluido, excluido, permitir : string;
+selected : integer;
+men : TForm;
+begin
+        if self.btn_salvar.Caption = '&Salvar' then
+          begin
+                 if validaCampos = True then
+                    begin
+                        self.edt_dataAlteracao.Text := DateToStr(Date);
+                        umFornecedor.setNome(Self.edt_nome.Text);
+                        umFornecedor.setFone1(self.edt_fone1.Text);
+                        umFornecedor.setFone2(self.edt_fone2.Text);
+                        umFornecedor.setEmail(Self.edt_email.Text);
+                        umFornecedor.setRepresentante(self.edt_representante.Text);
+                        umFornecedor.setFoneRepresentante(self.edt_telRepresentante.Text);
+
+                        umFornecedor.setnomeFantasia(self.edt_nomeFantasia.Text);
+                        umFornecedor.setlogradouro(Self.edt_logradouro.Text);
+                        umFornecedor.setnumero(self.edt_numero.Text);
+                        umFornecedor.setcomplemento(self.edt_complemento.Text);
+                        umFornecedor.setbairro(self.edt_bairro.Text);
+                        umFornecedor.setCEP(self.edt_CEP.Text);
+                        umFornecedor.setCNPJ(self.edt_cpf.Text);
+                        umFornecedor.setInscEst(self.edt_RG.Text);
+                        umFornecedor.setDataInclusao(StrToDate(self.edt_data.text));
+                        umFornecedor.setDataAlteracao(Date);
+
+                        incluido :=  umController.getControllerFornecedor.salvaFornecedor(umFornecedor);
+                             if incluido = 'OK' then
+                                if umFornecedor.getCodigo = 0 then
+                                  ShowMessage(umFornecedor.getNome + ' incluído com sucesso!')
+                                else
+                                  ShowMessage(umFornecedor.getNome + ' alterado com sucesso!');
+                      inherited;
+                    end;
+          end
+          else
+            begin
+               men := CreateMessageDialog('Deseja mesmo excluir o fornecedor ' + QuotedStr(umFornecedor.getNome) + '?',mtCustom,[mbYes,mbAbort]);
+               men.Caption := 'Confirmação';
+               men.Position := poDesktopCenter;
+               selected := men.ShowModal;
+
+                if selected = mrYes then
+                  begin
+                       permitir := umController.getControllerFornecedor.pesquisaDependencia(umFornecedor.getCodigo);
+                          if permitir = 'OK' then
+                            begin
+                              excluido :=  umController.getControllerFornecedor.excluiFornecedor(umFornecedor);
+                              ShowMessage(QuotedStr(umFornecedor.getNome) + ' excluído com sucesso!');
+                            end
+                            else
+                                Showmessage('Não foi possível excluir o fornecedor! Há produtos vinculados a ele!');
+                  inherited;
+                  end;
+            end;
+end;
+
+procedure TFrmCadastroFornecedor.SetConsultaCidade(pObj: TForm);
+begin
+    umFrmConsultaCidade := TFrmConsultaCidade (pObj);
+end;
+
+procedure TFrmCadastroFornecedor.btn_buscarClick(Sender: TObject);
+begin
+  umFrmConsultaCidade.ConhecaObj(umFornecedor.getUmaCidade,umController);
+  umFrmConsultaCidade.btn_Sair.Caption := 'Selecionar';
+  umFrmConsultaCidade.ShowModal;
+  Self.edt_codCidade.Text := IntToStr(umFornecedor.getUmaCidade.getCodigo);
+  Self.edt_cidade.Text := umFornecedor.getUmaCidade.getCidade;
+  umFrmConsultaCidade.btn_Sair.Caption := 'Sair';
+end;
+
+procedure TFrmCadastroFornecedor.btn_habilitarClick(Sender: TObject);
+begin
+  inherited;
+  self.HabilitaCampos;
+  self.btn_salvar.Enabled := true;
+  self.btn_habilitar.Enabled := False;
+  Self.btn_buscar.Enabled := True;
+end;
+
+procedure TFrmCadastroFornecedor.SetConsultaCondicao(pObj: TForm);
+begin
+    umFrmConsultacondicao := TFrmConsultaCondicao(pObj);
+end;
+
+procedure TFrmCadastroFornecedor.btn_buscar2Click(Sender: TObject);
+begin
+  umFrmConsultaCondicao.ConhecaObj(umFornecedor.getCondicao,umController);
+  umFrmConsultaCondicao.btn_Sair.Caption := 'Selecionar';
+  umFrmConsultaCondicao.ShowModal;
+  Self.edt_codCondicao.Text := IntToStr(umFornecedor.getCondicao.getCodigo);
+  Self.edt_Condicao.Text := umFornecedor.getCondicao.getNome;
+  umFrmConsultaCondicao.btn_Sair.Caption := 'Sair';
+end;
+
+function TFrmCadastroFornecedor.validaCampos: Boolean;
+begin
+    Result := False;
+        if (self.edt_nome.Text = '') then
+            begin
+                ShowMessage('O campo Razão Social é obrigatório');
+                edt_nome.SetFocus;
+            end
+        else if (self.edt_representante.Text = '') then
+            begin
+                ShowMessage('O campo Representante é obrigatório');
+                edt_representante.SetFocus;
+            end
+        else if (self.edt_telRepresentante.Text = '') then
+            begin
+                ShowMessage('O campo Telefone é obrigatório');
+                edt_telRepresentante.SetFocus;
+            end
+        else if (self.edt_cidade.Text = '') then
+            begin
+                ShowMessage('O campo Cidade é obrigatório');
+                btn_buscar.SetFocus;
+            end
+        else if (self.edt_cidade.Text = '') then
+            begin
+                ShowMessage('O campo Cidade é obrigatório');
+                btn_buscar.SetFocus;
+            end
+        else if (self.edt_Condicao.Text = '') then
+            begin
+                ShowMessage('O campo Condição de pagamento é obrigatório');
+                btn_buscar2.SetFocus;
+            end
+        else
+           begin
+           if (Self.edt_cpf.Text <> '') then
+                begin
+                  if isCNPJ(edt_cpf.Text) = False then
+                    begin
+                     ShowMessage('CNPJ Inválido!');
+                     Result := False;
+                      Exit;
+                    end
+                  else
+                      Result := True;
+                end;
+           Result := True;
+           end;
+end;
+
+procedure TFrmCadastroFornecedor.FormShortCut(var Msg: TWMKey;
+  var Handled: Boolean);
+var num1, num2: integer;
+   begin
+  inherited;
+    if (ActiveControl = self.edt_fone1) and (Msg.CharCode=9) then
+      begin
+      num1 := length(trim(edt_fone1.Text));
+        if (num1 > 0) and (num1 < 10 )then
+           begin
+             Msg.CharCode := 0;
+             showMessage('Digite o telefone completo!');
+             edt_fone1.text := '';
+           end;
+      num1:= length(self.edt_fone1.Text);
+      if (isNumerico(self.edt_fone1.Text) = false ) then
+        begin
+            ShowMessage('Apenas números!');
+            Msg.CharCode := 0;
+            edt_fone1.text := '';
+            edt_nomeFantasia.SetFocus;
+        end;
+
+      end;
+
+    if (ActiveControl = self.edt_fone2) and (Msg.CharCode=9) then
+      begin
+      num1 := length(trim(edt_fone2.Text));
+        if (num1 > 0) and (num1 < 10 )then
+           begin
+             Msg.CharCode := 0;
+             showMessage('Digite o telefone completo!');
+             edt_fone2.text := '';
+           end;
+      end;
+
+    if (ActiveControl = self.edt_telRepresentante) and (Msg.CharCode=9) then
+      begin
+      num1 := length(trim(edt_telRepresentante.Text));
+        if (num1 > 0) and (num1 < 10 )then
+           begin
+             Msg.CharCode := 0;
+             showMessage('Digite o telefone completo!');
+             edt_telRepresentante.text := '';
+           end;
+      end;
+end;
+
+procedure TFrmCadastroFornecedor.edt_fone1KeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+    if (Key = #32) or not (Key in ['0'..'9',#16,#8,#9,#13,#20,#27,#36,#37,#46,#107] ) then
+      begin
+          Key := #0;
+          self.edt_fone1.Clear;
+      end;
+end;
+
+procedure TFrmCadastroFornecedor.edt_fone2KeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+    if (Key = #32) or not (Key in ['0'..'9',#16,#8,#9,#13,#20,#27,#36,#37,#46,#107] ) then
+      begin
+          Key := #0;
+          self.edt_fone2.Clear;
+      end;
+end;
+
+procedure TFrmCadastroFornecedor.edt_telRepresentanteKeyPress(
+  Sender: TObject; var Key: Char);
+begin
+  inherited;
+    if (Key = #32) or not (Key in ['0'..'9',#16,#8,#9,#13,#20,#27,#36,#37,#46,#107] ) then
+      begin
+          Key := #0;
+          self.edt_telRepresentante.Clear;
+      end;
+end;
+
+function TFrmCadastroFornecedor.isCNPJ(CNPJ: string): boolean;
+var   dig13, dig14: string;
+    sm, i, r, peso: integer;
+begin
+// length - retorna o tamanho da string do CNPJ (CNPJ é um número formado por 14 dígitos)
+  if ((CNPJ = '00000000000000') or (CNPJ = '11111111111111') or
+      (CNPJ = '22222222222222') or (CNPJ = '33333333333333') or
+      (CNPJ = '44444444444444') or (CNPJ = '55555555555555') or
+      (CNPJ = '66666666666666') or (CNPJ = '77777777777777') or
+      (CNPJ = '88888888888888') or (CNPJ = '99999999999999') or
+      (length(CNPJ) <> 14))
+     then begin
+            isCNPJ := false;
+            exit;
+          end;
+
+// "try" - protege o código para eventuais erros de conversão de tipo através da função "StrToInt"
+  try
+{ *-- Cálculo do 1o. Digito Verificador --* }
+    sm := 0;
+    peso := 2;
+    for i := 12 downto 1 do
+    begin
+// StrToInt converte o i-ésimo caractere do CNPJ em um número
+      sm := sm + (StrToInt(CNPJ[i]) * peso);
+      peso := peso + 1;
+      if (peso = 10)
+         then peso := 2;
+    end;
+    r := sm mod 11;
+    if ((r = 0) or (r = 1))
+       then dig13 := '0'
+    else str((11-r):1, dig13); // converte um número no respectivo caractere numérico
+
+{ *-- Cálculo do 2o. Digito Verificador --* }
+    sm := 0;
+    peso := 2;
+    for i := 13 downto 1 do
+    begin
+      sm := sm + (StrToInt(CNPJ[i]) * peso);
+      peso := peso + 1;
+      if (peso = 10)
+         then peso := 2;
+    end;
+    r := sm mod 11;
+    if ((r = 0) or (r = 1))
+       then dig14 := '0'
+    else str((11-r):1, dig14);
+
+{ Verifica se os digitos calculados conferem com os digitos informados. }
+    if ((dig13 = CNPJ[13]) and (dig14 = CNPJ[14]))
+       then isCNPJ := true
+    else isCNPJ := false;
+  except
+    isCNPJ := false
+  end;
+end;
+
+function TFrmCadastroFornecedor.isNumerico(texto: string): Boolean;
+var
+valor :  string; 
+nr : integer;
+c : integer;
+tam, k: integer;
+begin
+     tam:= length(texto);
+     for k:= 1 to tam do
+       begin
+         val(texto[k],nr,c);
+            if c<>0 then
+               begin
+                  Result:= false;
+                  exit;
+               end;
+         Result:= true;
+       end;
+ {     val(texto,nr,c);
+      if c=0 then
+      result := true
+      else
+      Result := false;   }
+end;
+
+end.
