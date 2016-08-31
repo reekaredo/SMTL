@@ -68,6 +68,7 @@ type
     umCliente : Cliente;
     umFrmConsultaCidade : TFrmConsultaCidade;
     umFrmConsultaCondicao: TFrmConsultaCondicao;
+    cpfGuardado: string;
   protected
         umController : controller;
         procedure Sair;  override;
@@ -110,6 +111,7 @@ begin
       if umCliente.getCodigo <> 0 then
         begin
           Self.CarregaEdit;
+          cpfGuardado := umCliente.getCPF;
           self.SelecionaTipo;
         end;
 
@@ -181,9 +183,10 @@ begin
 end;
 
 procedure TFrmCadastroCliente.Salvar;
-var incluido, excluido : string;
+var incluido, excluido, permitir : string;
 selected : integer;
 men : TForm;
+label salva;
 begin
         if self.btn_salvar.Caption = '&Salvar' then
             begin
@@ -214,6 +217,10 @@ begin
                         umCliente.setDataAlteracao(Date);
                         umCliente.setNumero(edt_numero.Text);
 
+                        permitir := umController.getcontrollercliente.pesquisaSalvar(umCliente.getcpf);
+                          if permitir = 'OK' then
+                            begin
+                             salva:
                              try
                                  incluido :=  umController.getControllerCliente.salvaCliente(umCliente);
                                       if incluido = 'OK' then
@@ -226,6 +233,21 @@ begin
                                    ShowMessage('Não foi possível salvar!');
                                    self.edt_cpf.SetFocus;
                              end;
+                            end
+                          else if (permitir = 'EXISTE') and (umCliente.getCPF = cpfGuardado) then
+                            begin
+                              goto salva;
+                            end
+                          else if (permitir = 'EXISTE') and (umCliente.getCodigo <> 0) and (umCliente.getCPF <> cpfGuardado) then
+                            begin
+                               showmessage('CPF Já cadastrado');
+                               self.edt_cpf.setfocus;
+                            end
+                          else
+                            begin
+                               showmessage('CPF Já cadastrado');
+                               self.edt_cpf.setfocus;
+                            end;
                   end;
             end
         else

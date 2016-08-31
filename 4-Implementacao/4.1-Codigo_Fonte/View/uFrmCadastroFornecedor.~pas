@@ -173,6 +173,7 @@ begin
   self.edt_CEP.Enabled := True;
   self.edt_cpf.Enabled := True;
   self.edt_RG.Enabled := True;
+  btn_buscar2.Enabled := True;
 end;
 
 procedure TFrmCadastroFornecedor.LimparCampos;

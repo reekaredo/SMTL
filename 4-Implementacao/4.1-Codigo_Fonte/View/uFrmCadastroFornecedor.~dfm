@@ -1,6 +1,6 @@
 inherited FrmCadastroFornecedor: TFrmCadastroFornecedor
-  Left = 233
-  Top = 187
+  Left = 649
+  Top = 254
   Width = 959
   Height = 531
   Caption = 'M'#243'veis Tr'#234's Lagoas - Cadastro de Fornecedor'

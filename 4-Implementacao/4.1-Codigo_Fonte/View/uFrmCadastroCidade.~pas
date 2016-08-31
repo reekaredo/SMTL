@@ -132,7 +132,10 @@ begin
                                 Showmessage('Não foi possível excluir a cidade! Há fornecedores vinculados a ela')
 
                               else if permitir = 'FUNCIONARIO' then
-                                Showmessage('Não foi possível excluir a cidade! Há funcionários vinculados a ela');
+                                Showmessage('Não foi possível excluir a cidade! Há funcionários vinculados a ela')
+                                
+                              else if permitir = 'TRANSP' then
+                                Showmessage('Não foi possível excluir a cidade! Há transportadoras vinculadas a ela');
                 inherited;
                 end;
             end;

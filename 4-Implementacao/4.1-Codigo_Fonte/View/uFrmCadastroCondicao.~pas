@@ -220,7 +220,7 @@ begin
                             excluido :=  umController.getControllerCondicao.excluiCondicao(umaCondicao);
                             ShowMessage(QuotedStr(umaCondicao.getNome) + ' excluído com sucesso!')
                           end
-                        else if permitir = 'CIDADE' then
+                        else if permitir = 'CLIENTE' then
                             ShowMessage('Não foi possível excluir a condição! Há clientes vinculados a ela')
                         else if permitir = 'FORNECEDOR' then
                             ShowMessage('Não foi possível excluir a condição! Há fornecedores vinculados a ela');

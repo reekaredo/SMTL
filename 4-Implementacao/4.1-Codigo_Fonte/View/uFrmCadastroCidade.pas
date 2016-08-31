@@ -96,6 +96,8 @@ begin
           begin
                  if validaCampos = True then
                     begin
+                      umaCidade.Provincia := 'teste';
+                      showmessage(umaCidade.Provincia);
                       umaCidade.setCidade(self.edt_cidade.Text);
                       umaCidade.setDDD(self.edt_ddd.Text);
 
@@ -132,7 +134,10 @@ begin
                                 Showmessage('Não foi possível excluir a cidade! Há fornecedores vinculados a ela')
 
                               else if permitir = 'FUNCIONARIO' then
-                                Showmessage('Não foi possível excluir a cidade! Há funcionários vinculados a ela');
+                                Showmessage('Não foi possível excluir a cidade! Há funcionários vinculados a ela')
+                                
+                              else if permitir = 'TRANSP' then
+                                Showmessage('Não foi possível excluir a cidade! Há transportadoras vinculadas a ela');
                 inherited;
                 end;
             end;
