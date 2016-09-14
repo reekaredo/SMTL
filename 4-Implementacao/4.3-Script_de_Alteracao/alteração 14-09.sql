@@ -1,0 +1,61 @@
+CREATE TABLE vendas.compras (
+  compra_numeroNota INT(11) NOT NULL,
+  compra_codFornecedor INT(11) NOT NULL,
+  compra_serieNota INT(11) NOT NULL,
+  compra_tipoNota INT(11) DEFAULT 0,
+  compra_codTransportadora INT(11) NOT NULL,
+  compra_condPgto INT(11) NOT NULL,
+  compra_dataEmissao DATETIME DEFAULT NULL,
+  compra_dataChegada DATETIME DEFAULT NULL,
+  compra_baseCalculoICMS DOUBLE(15, 2) DEFAULT NULL,
+  compra_valorICMS DOUBLE(15, 2) DEFAULT NULL,
+  compra_baseCalculoICMSsubst DOUBLE(15, 2) DEFAULT NULL,
+  compra_valorICMSsubst DOUBLE(15, 2) DEFAULT NULL,
+  compra_valorTotalProdutos DOUBLE(15, 2) DEFAULT NULL,
+  compra_valorFrete DOUBLE(15, 2) DEFAULT NULL,
+  compra_valorSeguro DOUBLE(15, 2) DEFAULT NULL,
+  compra_desconto DOUBLE(15, 2) DEFAULT NULL,
+  compra_outrasDespAcessorias DOUBLE(15, 2) DEFAULT NULL,
+  compra_valorTotalIPI DOUBLE(15, 2) DEFAULT NULL,
+  compra_valorTotal DOUBLE(15, 2) DEFAULT NULL,
+  compra_qtde INT(11) DEFAULT NULL,
+  compra_placaVeiculo VARCHAR(25) DEFAULT NULL,
+  compra_ufVeiculo VARCHAR(5) DEFAULT NULL,
+  compra_especie VARCHAR(100) DEFAULT NULL,
+  compra_marca VARCHAR(25) DEFAULT NULL,
+  compra_numeracao VARCHAR(25) DEFAULT NULL,
+  compra_pesoBruto DOUBLE(15, 2) DEFAULT NULL,
+  compra_pesoLiquido DOUBLE(15, 2) DEFAULT NULL,
+  compra_fretePorconta VARCHAR(25) DEFAULT NULL,
+  compra_codCompra INT(11) DEFAULT NULL,
+  PRIMARY KEY (compra_numeroNota, compra_codFornecedor),
+  INDEX compra_codCompra (compra_codCompra),
+  CONSTRAINT FK_compras_condicoes_cond_id FOREIGN KEY (compra_condPgto)
+    REFERENCES vendas.condicoes(cond_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT FK_compras_fornecedores_for_id FOREIGN KEY (compra_codFornecedor)
+    REFERENCES vendas.fornecedores(for_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT FK_compras_transportadoras_transp_id FOREIGN KEY (compra_codTransportadora)
+    REFERENCES vendas.transportadoras(transp_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+)
+
+CREATE TABLE vendas.itenscompra (
+  itemC_codProduto INT(11) DEFAULT NULL,
+  itemC_codCompra INT(11) NOT NULL DEFAULT 0,
+  itemC_numero INT(11) NOT NULL DEFAULT 0,
+  itemC_nome VARCHAR(70) NOT NULL,
+  itemC_valorUnitario DOUBLE(15, 2) DEFAULT 0.00,
+  itemC_ncm VARCHAR(30) DEFAULT NULL,
+  itemC_cst VARCHAR(10) DEFAULT NULL,
+  itemC_unidade INT(11) DEFAULT NULL,
+  itemC_cfop VARCHAR(10) DEFAULT NULL,
+  itemC_qtde INT(11) NOT NULL,
+  itemC_vTotal DOUBLE(15, 2) DEFAULT 0.00,
+  itemC_baseICMS DOUBLE(15, 2) DEFAULT 0.00,
+  itemC_valorICMS DOUBLE(15, 2) DEFAULT 0.00,
+  itemC_valorIPI DOUBLE(15, 2) DEFAULT 0.00,
+  itemC_aliqICMS DOUBLE(15, 2) DEFAULT 0.00,
+  itemC_aliqIPI DOUBLE(15, 2) DEFAULT 0.00,
+  PRIMARY KEY (itemC_codCompra, itemC_numero),
+  CONSTRAINT FK_itenscompra_produtos_pro_id FOREIGN KEY (itemC_codProduto)
+    REFERENCES vendas.produtos(pro_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+)
