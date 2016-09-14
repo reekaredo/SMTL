@@ -55,9 +55,21 @@ function controllerCidade.pesquisaCidade(chave: string): string;
 var mSQL : string;
 aux : integer;
 begin
-     if chave = '' then
+  if (chave = 'ORDENAR CODIGO CONTRARIO') then
+    begin
+      mSQL := 'select * from cidades order by cid_id desc'
+    end
+  else if (chave = 'ORDENAR CODIGO') then
+    begin
+      mSQL := 'select * from cidades order by cid_id'
+    end
+  else if (chave = 'ORDENAR NOME CONTRARIO') then
+    begin
+      mSQL := 'select * from cidades order by cid_nome desc'
+    end
+  else if chave = '' then
         mSQL := 'select * from cidades order by cid_nome'
-     else
+  else
     begin
         mSQL := 'select * from cidades where cid_nome like ' + quotedstr('%' + chave + '%') + ' order by cid_nome';
     end;
@@ -111,7 +123,18 @@ begin
           begin
             Result := 'FUNCIONARIO';
             goto Encerra;
-          end;   
+          end;
+
+  // pesquisa na tabela funcionários
+      mSQL := 'select * from funcionarios where func_cidade like ' + id;
+        aux := umDao.sqlDependencia(mSQL,3);
+        if aux = 0 then
+            Result := 'OK'
+        else
+          begin
+            Result := 'FUNCIONARIO';
+            goto Encerra;
+          end;              
 
   Encerra:
 end;

@@ -19,6 +19,7 @@ interface
     function salvaCliente (pCliente : Cliente) : string;
     function excluiCliente(pCliente : Cliente) : string;
     function pesquisaCliente(chave: string): string;
+    function pesquisaSalvar(chave : string) : string;
     
 end;
 
@@ -89,6 +90,21 @@ end;
 function controllerCliente.salvaCliente(pCliente: Cliente): string;
 begin
    Result := umDao.SalvarCliente (pCliente);
+end;
+
+function controllerCliente.pesquisaSalvar(chave: string): string;
+var mSQL : string;
+aux : integer;
+begin
+  // pesquisa na tabela clientes - tipo 1 de pesquisa  - CPF
+      mSQL := 'select * from clientes where cli_cpf = ' + chave;
+        aux := umDao.sqlSalvar(mSQL,1);
+        if aux = 0 then
+            Result := 'OK'
+        else
+          begin
+            Result := 'EXISTE';
+           end;  
 end;
 
 end.

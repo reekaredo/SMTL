@@ -19,6 +19,7 @@ interface
     function salvaCliente (pCliente : Cliente) : string;
     function excluiCliente(pCliente : Cliente) : string;
     function pesquisaCliente(chave: string): string;
+    function pesquisaSalvar(chave : string) : string;
     
 end;
 
@@ -65,6 +66,10 @@ begin
     end
   else if chave = '' then
     mSQL := 'select * from clientes order by cli_nome'
+  else if (chave = 'ORDENAR NOME CONTRARIO') then
+    begin
+      mSQL := 'select * from clientes order by cli_nome desc'
+    end
   else
     begin
         mSQL := 'select * from clientes where cli_nome like ' +
@@ -85,6 +90,21 @@ end;
 function controllerCliente.salvaCliente(pCliente: Cliente): string;
 begin
    Result := umDao.SalvarCliente (pCliente);
+end;
+
+function controllerCliente.pesquisaSalvar(chave: string): string;
+var mSQL : string;
+aux : integer;
+begin
+  // pesquisa na tabela clientes - tipo 1 de pesquisa  - CPF
+      mSQL := 'select * from clientes where cli_cpf like ' + chave;
+        aux := umDao.sqlSalvar(mSQL,1);
+        if aux = 0 then
+            Result := 'OK'
+        else
+          begin
+            Result := 'EXISTE';
+           end;  
 end;
 
 end.

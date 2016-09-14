@@ -5,7 +5,8 @@ interface
   uses uDao, DB, sysutils, DBAccess, MyAccess, MemDS, uControllerMarca,
   uControllerEstado, uControllerFornecedor, uControllerCliente, uControllerCidade,
   uControllerPais, uControllerProduto, uControllerForma, uControllerUsuario,
-  uControllerGrupo, uControllerFuncionario, uControllerCondicao, uControllerParcela;
+  uControllerGrupo, uControllerFuncionario, uControllerCondicao, uControllerParcela,
+  uControllerTransportadora, ucontrollerItemCompra, uControllerCompra;
 
   type controller = class
 
@@ -26,10 +27,22 @@ interface
     umControllerFuncionario : controllerFuncionario;
     umControllerCondicao : controllerCondicao;
     umControllerParcela: controllerParcela;
+    umControllerTransportadora: controllerTransportadora;
+    umControllerItemCompra: controllerItemCompra;
+    umControllerCompra: controllerCompra;
 
   public
     constructor CrieObj;
     destructor destrua_se;
+
+    procedure setControllerCompra (pControllerCompra: controllerCompra);
+    function getControllerCompra : controllerCompra;
+
+    procedure setControllerItemCompra (pControllerItemCompra: controllerItemCompra);
+    function getControllerItemCompra : controllerItemCompra;
+
+    procedure setControllerTransportadora (pControllerTransportadora: controllerTransportadora);
+    function getControllerTransportadora : controllerTransportadora;
 
     procedure setControllerParcela (pControllerParcela: controllerParcela);
     function getControllerParcela : controllerParcela;
@@ -92,6 +105,9 @@ begin
   umControllerFuncionario := controllerFuncionario.CrieObj;
   umControllerCondicao := controllerCondicao.CrieObj;
   umControllerParcela := controllerParcela.CrieObj;
+  umControllerTransportadora := controllerTransportadora.CrieObj;
+  umControllerItemCompra := controllerItemCompra.CrieObj;
+  umControllerCompra := controllerCompra.CrieObj;
 end;
 
 destructor controller.destrua_se;
@@ -110,6 +126,9 @@ begin
   umControllerFuncionario.destrua_se;
   umControllerCondicao.destrua_se;
   umControllerParcela.destrua_se;
+  umControllerTransportadora.destrua_se;
+  umControllerItemCompra.destrua_se;
+  umControllerCompra.destrua_se;
 end;
 
 // --------------- setters and getters -> PRODUTO ------------------
@@ -265,6 +284,43 @@ procedure controller.setControllerParcela(
   pControllerParcela: controllerParcela);
 begin
    self.umControllerParcela := pControllerParcela;
+end;
+
+
+// ------------ setters and getters -> TRANSPORTADORA ------------------
+function controller.getControllerTransportadora: controllerTransportadora;
+begin
+    Result := self.umControllerTransportadora;
+end;
+
+procedure controller.setControllerTransportadora(
+  pControllerTransportadora: controllerTransportadora);
+begin
+    self.umControllerTransportadora := pControllerTransportadora;
+end;
+
+// ------------ setters and getters -> ITEM COMPRA ------------------
+function controller.getControllerItemCompra: controllerItemCompra;
+begin
+    Result := self.umControllerItemCompra;
+end;
+
+procedure controller.setControllerItemCompra(
+  pControllerItemCompra: controllerItemCompra);
+begin
+   self.umControllerItemCompra := pControllerItemCompra;
+end;
+
+// ------------ setters and getters -> COMPRA ------------------
+function controller.getControllerCompra: controllerCompra;
+begin
+   result := self.umControllerCompra;
+end;
+
+procedure controller.setControllerCompra(
+  pControllerCompra: controllerCompra);
+begin
+   self.umControllerCompra := pControllerCompra;
 end;
 
 end.

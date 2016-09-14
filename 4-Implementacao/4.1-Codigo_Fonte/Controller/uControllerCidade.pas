@@ -123,7 +123,18 @@ begin
           begin
             Result := 'FUNCIONARIO';
             goto Encerra;
-          end;   
+          end;
+
+  // pesquisa na tabela transportadoras
+      mSQL := 'select * from transportadoras where transp_cidade like ' + id;
+        aux := umDao.sqlDependencia(mSQL,4);
+        if aux = 0 then
+            Result := 'OK'
+        else
+          begin
+            Result := 'TRANSP';
+            goto Encerra;
+          end;              
 
   Encerra:
 end;

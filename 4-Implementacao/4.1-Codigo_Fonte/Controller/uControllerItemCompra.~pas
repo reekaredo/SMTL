@@ -1,0 +1,80 @@
+unit uControllerItemCompra;
+
+interface
+  uses uDaoItemCompra, DB, sysutils, DBAccess, MyAccess, MemDS, uItemCompra;
+  type controllerItemCompra = class
+
+  private
+
+  protected
+    umDao : DaoItemCompra;
+
+  public
+    constructor CrieObj;
+    destructor destrua_se;
+
+// ------------- MÉTODOS DE ITENS COMPRA ------------------
+    function getDsItemCompra : TMyDataSource;
+    procedure carregaItemCompra(pItemCompra : ItemCompra);
+    function salvaItemCompra(pItemCompra : ItemCompra) : string;
+    function excluiItemCompra(pItemCompra : ItemCompra): string;
+    function pesquisaItemCompra(chave : string) : integer;
+  
+end;
+
+implementation
+
+{ controllerItemCompra }
+
+constructor controllerItemCompra.CrieObj;
+begin
+   umDao := DaoItemCompra.CrieObjeto;
+end;
+
+destructor controllerItemCompra.destrua_se;
+begin
+    umDao.destrua_se;
+end;
+
+procedure controllerItemCompra.carregaItemCompra(pItemCompra: ItemCompra);
+begin
+   umDao.carregaItemCompra(pItemCompra);
+end;
+
+function controllerItemCompra.excluiItemCompra(
+  pItemCompra: ItemCompra): string;
+begin
+   Result := umdao.ExcluiItemCompra(pItemCompra);
+end;
+
+function controllerItemCompra.getDsItemCompra: TMyDataSource;
+begin
+   Result := umDao.getDSItemCompra;
+end;
+
+function controllerItemCompra.pesquisaItemCompra(chave: string): integer;
+var mSQL : string;
+aux : integer;
+begin
+  if chave = '' then
+    mSQL := 'select * from itenscompra order by itemC_numero'
+  else
+    begin
+        mSQL := 'select * from itenscompra where itemC_codCompra = ' + chave + ' order by itemC_numero';
+    end;
+      aux := umDao.sqlItemCompra(mSQL);
+      if aux = 0 then
+        begin
+          Result := 0;
+        end
+      else
+          Result := aux;
+end;
+
+function controllerItemCompra.salvaItemCompra(
+  pItemCompra: ItemCompra): string;
+begin
+
+end;
+
+end.

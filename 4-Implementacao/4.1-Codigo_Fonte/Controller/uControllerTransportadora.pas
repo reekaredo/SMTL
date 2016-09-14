@@ -1,0 +1,106 @@
+unit uControllerTransportadora;
+
+interface
+  uses uDaoTransportadora, DB, sysutils, DBAccess, MyAccess, MemDS, uTransportadora;
+  type controllerTransportadora = class
+
+  private
+
+  protected
+    umDao : DaoTransportadora;
+
+  public
+      constructor CrieObj;
+      destructor destrua_se;
+
+// ------------- MÉTODOS DE TRANSPORTADORA ----------------
+    function getDsTransportadora : TMyDataSource;
+    procedure carregaTransportadora (pTransportadora : Transportadora);
+    function salvaTransportadora (pTransportadora : Transportadora) : string;
+    function excluiTransportadora(pTransportadora : Transportadora) : string;
+    function pesquisaTransportadora(chave: string): string;
+    function pesquisaDependencia(chave : integer) : string;    
+
+end;
+
+implementation
+
+{ controllerTransportadora }
+
+procedure controllerTransportadora.carregaTransportadora(
+  pTransportadora: Transportadora);
+begin
+    umDao.carregaTransportadora(pTransportadora);
+end;
+
+constructor controllerTransportadora.CrieObj;
+begin
+    umDao := DaoTransportadora.CrieObjeto;
+end;
+
+destructor controllerTransportadora.destrua_se;
+begin
+   umDao.destrua_se;
+end;
+
+function controllerTransportadora.excluiTransportadora(
+  pTransportadora: Transportadora): string;
+begin
+    Result := umDao.ExcluiTransportadora(pTransportadora);
+end;
+
+function controllerTransportadora.getDsTransportadora: TMyDataSource;
+begin
+   Result := umDao.getDSTransportadora;
+end;
+
+function controllerTransportadora.pesquisaDependencia(
+  chave: integer): string;
+begin
+    {fazer apos a compra}
+    result := 'OK'; 
+end;
+
+function controllerTransportadora.pesquisaTransportadora(
+  chave: string): string;
+var mSQL : string;
+aux : integer;
+begin
+  if (chave = 'ORDENAR CODIGO CONTRARIO') then
+    begin
+      mSQL := 'select * from transportadoras order by transp_id desc'
+    end
+  else if (chave = 'ORDENAR CODIGO') then
+    begin
+      mSQL := 'select * from transportadoras order by transp_id'
+    end
+  else if (chave = 'ORDENAR NOME CONTRARIO') then
+    begin
+      mSQL := 'select * from transportadoras order by transp_nome desc'
+    end
+  else if chave = '' then
+    mSQL := 'select * from transportadoras order by transp_nome'
+  else
+    begin
+        mSQL := 'select * from fornecedores where transp_nome like '
+        + quotedstr('%' + chave + '%')
+        + ' or transp_antt like ' + quotedstr('%' + chave + '%')
+        + ' or transp_endereco like ' + quotedstr('%' + chave + '%')
+        + ' or transp_placa like ' + quotedstr('%' + chave + '%')
+        + ' or transp_cnpj like ' + quotedstr('%' + chave + '%')
+        + ' order by transp_nome';
+    end;
+      aux := umDao.sqlTransportadora(mSQL);
+      if aux = 0 then
+        begin
+          Result := 'NADA';
+        end;
+end;
+
+function controllerTransportadora.salvaTransportadora(
+  pTransportadora: Transportadora): string;
+begin
+   Result := umDao.SalvarTransportadora(pTransportadora);
+end;
+
+end.
