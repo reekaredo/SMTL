@@ -4,6 +4,7 @@ inherited FrmCadastroTransportadora: TFrmCadastroTransportadora
   Width = 963
   Height = 538
   Caption = 'Cadastro de Transportadoras'
+  OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   object lbl_nome: TLabel [3]
@@ -162,7 +163,7 @@ inherited FrmCadastroTransportadora: TFrmCadastroTransportadora
     Top = 240
     Width = 227
     Height = 25
-    CharCase = ecLowerCase
+    CharCase = ecUpperCase
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -15

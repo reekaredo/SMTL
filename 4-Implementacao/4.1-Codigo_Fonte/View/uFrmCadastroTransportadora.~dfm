@@ -311,6 +311,7 @@ inherited FrmCadastroTransportadora: TFrmCadastroTransportadora
     Height = 25
     Caption = '&Abrir edi'#231#227'o'
     TabOrder = 14
+    OnClick = btn_habilitarClick
   end
   object edt_UF: TEdit
     Left = 408

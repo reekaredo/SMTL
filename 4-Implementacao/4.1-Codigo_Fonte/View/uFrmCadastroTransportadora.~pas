@@ -32,6 +32,7 @@ type
     btn_habilitar: TButton;
     edt_UF: TEdit;
     procedure btn_buscarClick(Sender: TObject);
+    procedure btn_habilitarClick(Sender: TObject);
   private
     { Private declarations }
     umaTransportadora : Transportadora;
@@ -334,6 +335,15 @@ begin
   Self.edt_codCidade.Text := IntToStr(umaTransportadora.getUmaCidade.getCodigo);
   Self.edt_cidade.Text := umaTransportadora.getUmaCidade.getCidade;
   umFrmConsultaCidade.btn_Sair.Caption := 'Sair';        
+end;
+
+procedure TFrmCadastroTransportadora.btn_habilitarClick(Sender: TObject);
+begin
+  inherited;
+  self.HabilitaCampos;
+  self.btn_salvar.Enabled := true;
+  self.btn_habilitar.Enabled := False;
+  Self.btn_buscar.Enabled := True;
 end;
 
 end.
