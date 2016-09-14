@@ -149,15 +149,33 @@ end;
 
 function DaoCondicao.sqlDependencia(pSQL: string; tipo: Integer): Integer;
 begin
- umDM.SQL_cliente.Active := False;
-  umDM.SQL_cliente.SQL.Text := pSQL;
-    if not umDM.SQL_cliente.Active then
-      umDM.SQL_cliente.Open;
+    //buscar nos clientes
+    if tipo = 1 then
+       begin
+          umDM.SQL_cliente.Active := False;
+          umDM.SQL_cliente.SQL.Text := pSQL;
+            if not umDM.SQL_cliente.Active then
+              umDM.SQL_cliente.Open;
 
-  if umDM.SQL_cliente.RecordCount = 0 then
-    result :=  0
-  else
-    result := 1;
+          if umDM.SQL_cliente.RecordCount = 0 then
+            result :=  0
+          else
+            result := 1;
+       end;
+
+    //buscar nos fornecedores
+    if tipo = 2 then
+        begin
+          umDM.SQL_fornecedor.Active := False;
+          umDM.SQL_fornecedor.SQL.Text := pSQL;
+            if not umDM.SQL_fornecedor.Active then
+              umDM.SQL_fornecedor.Open;
+
+          if umDM.SQL_fornecedor.RecordCount = 0 then
+            result :=  0
+          else
+            result := 1;
+        end;
 
 end;
 

@@ -17,7 +17,7 @@ interface
     function SalvarCliente (pCliente : Cliente) : string;
     function ExcluiCliente(pCliente : Cliente) : string;
     function sqlCliente(pSQL: string) : Integer;
-
+    function sqlSalvar(pSQL: string; tipo: Integer) : Integer;
 end;
 
 implementation
@@ -171,6 +171,27 @@ begin
     result :=  0
   else
     result := 1;
+end;
+
+function DaoCliente.sqlSalvar(pSQL: string; tipo: Integer): Integer;
+begin
+    //buscar nos clientes se há o cpf cadastrado
+       begin
+          umDM.SQL_cliente.Active := False;
+          umDM.SQL_cliente.SQL.Text := pSQL;
+            if not umDM.SQL_cliente.Active then
+              umDM.SQL_cliente.Open;
+
+          if umDM.SQL_cliente.RecordCount = 0 then
+            result :=  0
+          else
+            result := 1;
+
+          umdm.SQL_cliente.Active := false;
+          umDM.SQL_cliente.SQL.Text := 'select * from clientes';
+            if not umDM.SQL_cliente.Active then
+              umDM.SQL_cliente.Open;
+       end;
 end;
 
 end.

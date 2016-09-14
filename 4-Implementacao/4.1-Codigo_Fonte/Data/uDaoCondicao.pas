@@ -33,6 +33,7 @@ begin
     begin
       umDM.SQL_condicoes.Open;
     end;
+    
     pCondicao.setCodigo(umDM.intgrfldSQL_condicoescond_id.Value);
     pCondicao.setNome(umDM.strngfldSQL_condicoescond_nome.Value);
 

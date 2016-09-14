@@ -157,8 +157,7 @@ begin
             result := 1;
         end;
 
-  //buscar nos funcionarios
-  {  if tipo = 3 then
+  if tipo = 3 then
         begin
           umDM.SQL_funcionario.Active := False;
           umDM.SQL_funcionario.SQL.Text := pSQL;
@@ -169,7 +168,7 @@ begin
             result :=  0
           else
             result := 1;
-        end;     }
+        end;     
 end;
 
 end.

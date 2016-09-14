@@ -156,7 +156,7 @@ begin
           else
             result := 1;
         end;
-
+  // buscar nos funcionarios
   if tipo = 3 then
         begin
           umDM.SQL_funcionario.Active := False;
@@ -168,7 +168,21 @@ begin
             result :=  0
           else
             result := 1;
-        end;     
+        end;
+
+  // buscar nas transportadoras
+  if tipo = 4 then
+        begin
+          umDM.SQL_transportadora.Active := False;
+          umDM.SQL_transportadora.SQL.Text := pSQL;
+            if not umDM.SQL_transportadora.Active then
+              umDM.SQL_transportadora.Open;
+
+          if umDM.SQL_transportadora.RecordCount = 0 then
+            result :=  0
+          else
+            result := 1;
+        end;
 end;
 
 end.
