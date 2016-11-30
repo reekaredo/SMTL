@@ -1,0 +1,208 @@
+unit uContaReceber;
+
+interface
+  uses uPai, uCliente, uForma;
+
+  type ContaReceber = class(Pai)
+
+  private
+
+  protected
+    dataCadastro: TDateTime;
+    umCliente: Cliente;
+    documento : string[100];
+    dataVencimento: TDateTime;
+    valor: real;
+    numeroParcela: integer;
+    juros: real;
+    observacao: string[50];
+    status: integer;
+    dataPagamento: TDateTime;
+    umaForma: Forma;
+    codVenda: integer;
+
+  public
+    constructor crieobj;
+    destructor destrua_se;
+
+    procedure setDataCadastro (pData  : TDateTime);
+    function getDataCadastro  : TDateTime;
+
+    procedure setDataVencimento (pData  : TDateTime);
+    function getDataVencimento  : TDateTime;
+
+    procedure setDataPagamento (pData  : TDateTime);
+    function getDataPagamento  : TDateTime;
+
+    procedure setDocumento (pDocumento  : string);
+    function getDocumento  : string;
+
+    procedure setValor (pValor  : real);
+    function getValor  : real;
+
+    procedure setJuros (pJuros  : real);
+    function getJuros  : real;
+
+    procedure setObservacao (pObservacao  : string);
+    function getObservacao  : string;
+
+    procedure setNumeroParcela (pNumeroParcela  : integer);
+    function getNumeroParcela  : integer;
+
+    procedure setStatus (pStatus  : integer);
+    function getStatus  : integer;
+
+    procedure setumCliente (pCliente  : Cliente);
+    function getumCliente  : Cliente;
+
+    procedure setumaForma (pForma  : Forma);
+    function getumaForma  : Forma;
+
+    procedure setCodVenda (pCodVenda  : integer);
+    function getCodVenda  : integer;
+
+end;
+
+implementation
+
+{ ContaReceber }
+
+constructor ContaReceber.crieobj;
+begin
+    inherited;
+    self.umCliente := Cliente.crieobj;
+    self.umaForma := forma.crieobj;
+    self.umCliente.setCodigo(0);
+    self.numeroParcela := 1;
+    self.status := 0;
+    self.codVenda := 0;
+end;
+
+destructor ContaReceber.destrua_se;
+begin
+  self.umCliente.destrua_se;
+  self.umaForma.destrua_se;
+end;
+
+function ContaReceber.getCodVenda: integer;
+begin
+   result := self.codVenda;
+end;
+
+function ContaReceber.getDataCadastro: TDateTime;
+begin
+   result:= self.dataCadastro;
+end;
+
+function ContaReceber.getDataPagamento: TDateTime;
+begin
+  result:= self.dataPagamento;
+end;
+
+function ContaReceber.getDataVencimento: TDateTime;
+begin
+  result:= self.dataVencimento;
+end;
+
+function ContaReceber.getDocumento: string;
+begin
+ result:= self.documento;
+end;
+
+function ContaReceber.getJuros: real;
+begin
+  result:= self.juros;
+end;
+
+function ContaReceber.getNumeroParcela: integer;
+begin
+  result:= self.numeroParcela;
+end;
+
+function ContaReceber.getObservacao: string;
+begin
+ result:= self.observacao;
+end;
+
+function ContaReceber.getStatus: integer;
+begin
+  result:= self.status;
+end;
+
+function ContaReceber.getumaForma: Forma;
+begin
+  result:= self.umaForma;
+end;
+
+function ContaReceber.getumCliente: Cliente;
+begin
+  result:= self.umCliente;
+end;
+
+function ContaReceber.getValor: real;
+begin
+  result:= self.valor;
+end;
+
+procedure ContaReceber.setCodVenda(pCodVenda: integer);
+begin
+  self.codVenda := pCodVenda;
+end;
+
+procedure ContaReceber.setDataCadastro(pData: TDateTime);
+begin
+  self.dataCadastro := pData;
+end;
+
+procedure ContaReceber.setDataPagamento(pData: TDateTime);
+begin
+   self.dataPagamento := pData;
+end;
+
+procedure ContaReceber.setDataVencimento(pData: TDateTime);
+begin
+  self.dataVencimento := pData;
+end;
+
+procedure ContaReceber.setDocumento(pDocumento: string);
+begin
+   self.documento := pDocumento;
+end;
+
+procedure ContaReceber.setJuros(pJuros: real);
+begin
+  self.juros := pJuros;
+end;
+
+procedure ContaReceber.setNumeroParcela(pNumeroParcela: integer);
+begin
+  self.numeroParcela := pNumeroParcela;
+end;
+
+procedure ContaReceber.setObservacao(pObservacao: string);
+begin
+  self.observacao := pObservacao;
+end;
+
+procedure ContaReceber.setStatus(pStatus: integer);
+begin
+  self.status := pStatus;
+end;
+
+procedure ContaReceber.setumaForma(pForma: Forma);
+begin
+  self.umaForma := pForma;
+end;
+
+procedure ContaReceber.setumCliente(pCliente: Cliente);
+begin
+  self.umCliente := pCliente;
+end;
+
+procedure ContaReceber.setValor(pValor: real);
+begin
+  self.valor := pValor;
+end;
+
+end.
+ 

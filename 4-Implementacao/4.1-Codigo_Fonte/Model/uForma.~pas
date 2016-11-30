@@ -8,10 +8,11 @@ uses uPai;
 
   protected
     Nome  : string[80];
+    saldo: real;
+
   public
     constructor crieobj;
     destructor destrua_se;
-
   
     procedure setNome(pNome : string);
     function getNome  : string;

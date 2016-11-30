@@ -3,7 +3,7 @@ unit uAplicacao;
 interface
   uses uPais, uEstado, uCidade, uCliente,
   uInter, uGerente, uController, uFornecedor, uMarca, uProduto,
-  uFrmLogin, uForma, uUsuario, uGrupo, uFuncionario, uCondicao;
+  uFrmLogin, uForma, uUsuario, uGrupo, uFuncionario, uCondicao, uTransportadora, uCompra, uVeiculo, uVenda, uContaPagar, uContaReceber;
 
     type Aplicacao = class
 
@@ -27,6 +27,12 @@ interface
       umGrupo: Grupo;
       umFuncionario : Funcionario;
       umaCondicao: Condicao;
+      umaTransportadora: Transportadora;
+      umaCompra: Compra;
+      umVeiculo: Veiculo;
+      umaVenda: venda;
+      umaContaPagar: ContaPagar;
+      umaContaReceber: ContaReceber;
 
     public
     constructor CrieObj;
@@ -63,6 +69,12 @@ begin
     umaCondicao.destrua_se;
     umController.destrua_se;
     umaForma.destrua_se;
+    umaTransportadora.destrua_se;
+    umaCompra.destrua_se;
+    umVeiculo.destrua_se;
+    umaVenda.destrua_se;
+    umaContaPagar.destrua_se;
+    umaContaReceber.destrua_se;
 end;
 
 destructor Aplicacao.Destrua_se;
@@ -86,8 +98,8 @@ begin
         userAux := umFrmLogin.getUsuarioLogado;
         umGerente.setUsuarioLogado(userAux);
         umGerente.setTipoUsuario(umFrmLogin.getTipoUsuario);
-        umGerente.ConhecaObj(umaInter, umPais, umEstado, umaCidade, umCliente, umController, umFornecedor, umaMarca, umProduto, umaForma, umUsuario, umGrupo, umFuncionario, umaCondicao);
-        umFrmLogin.edt_usuario.Clear; 
+        umGerente.ConhecaObj(umaInter, umPais, umEstado, umaCidade, umCliente, umController, umFornecedor, umaMarca, umProduto, umaForma, umUsuario, umGrupo, umFuncionario, umaCondicao, umaTransportadora, umaCompra, umVeiculo, umaVenda, umaContaPagar, umaContaReceber);
+        umFrmLogin.edt_usuario.Clear;
         umFrmLogin.edt_senha.Clear;
         umGerente.showModal;
         DestruaTudo;
@@ -112,6 +124,12 @@ begin
     umGerente := TGerente.Create(nil);
     umController := controller.CrieObj;
     umaForma := Forma.crieobj;
+    umaTransportadora := Transportadora.CrieObj;
+    umaCompra := Compra.crieobj;
+    umVeiculo := Veiculo.crieobj;
+    umavenda:= Venda.crieobj;
+    umaContaPagar := ContaPagar.crieobj;
+    umaContaReceber := ContaReceber.crieobj;
 end;
 
 end.

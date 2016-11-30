@@ -8,6 +8,7 @@ uses uPai;
 
   protected
     Nome  : string[80];
+    saldo: real;
 
   public
     constructor crieobj;
@@ -15,6 +16,9 @@ uses uPai;
   
     procedure setNome(pNome : string);
     function getNome  : string;
+
+    procedure setSaldo (pSaldo: real);
+    function getSaldo: real;
 
 end;
 
@@ -38,9 +42,19 @@ begin
     Result := self.Nome;
 end;
 
+function Forma.getSaldo: real;
+begin
+   result := self.saldo;
+end;
+
 procedure Forma.setNome(pNome: string);
 begin
    self.Nome := pNome;
+end;
+
+procedure Forma.setSaldo(pSaldo: real);
+begin
+   self.saldo := pSaldo;
 end;
 
 end.
