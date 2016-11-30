@@ -31,7 +31,6 @@ type
     edt_codFornecedor: TEdit;
     edt_Fornecedor: TEdit;
     btn_buscar1: TButton;
-    lbl_2: TLabel;
     lbl_data: TLabel;
     edt_data: TEdit;
     lbl_13: TLabel;
@@ -98,6 +97,11 @@ type
     procedure Foto3DblClick(Sender: TObject);
     procedure Foto4DblClick(Sender: TObject);
     procedure Foto5DblClick(Sender: TObject);
+    procedure edt_precoExit(Sender: TObject);
+    procedure edt_precoMinExit(Sender: TObject);
+    procedure edt2Exit(Sender: TObject);
+    procedure edt_obsKeyPress(Sender: TObject; var Key: Char);
+    procedure edt_custoExit(Sender: TObject);
   private
     { Private declarations }
     umProduto : Produto;
@@ -109,6 +113,7 @@ type
     umFrmConsultaImagem: TForm1;
   protected
         umController : controller;
+        refGuardada: string;
         procedure Sair;  override;
         procedure Salvar; override;
         procedure CarregaEdit; override;
@@ -118,6 +123,8 @@ type
         function verificaReal(texto: string): Boolean;
         function verificaInteiro(texto: string): Boolean;
         function validaCampos: Boolean;
+        function verificaVirgula(texto: string): boolean;
+        function duasCasas(texto: string): string;
 
   public
     { Public declarations }
@@ -148,6 +155,8 @@ begin
   Self.edt_nome.Text := umProduto.getNome;
   Self.edt_data.Text := DateToStr(umProduto.getDataCadastro);
   Self.edt_dataAlteracao.Text := DateToStr(umProduto.getDataAlteracao);
+  self.edt_dataUltimaCompra.Text := datetostr(umProduto.getDataUltimaCompra);
+  self.edt_dataUltimaVenda.Text  := datetostr(umProduto.getDataUltimaVenda);
   self.edt_barras.Text := umProduto.getBarra;
   self.edt_custo.Text := FloatToStr(umProduto.getCusto);
   self.edt_preco.Text := FloatToStr(umProduto.getPreco);
@@ -187,6 +196,7 @@ begin
       if umProduto.getCodigo <> 0 then
                 begin
                   umController.getControllerProduto.carregaImagens(umProduto,umaColecaoImagens);
+                  refGuardada := umProduto.getReferencia;
                   Self.CarregaEdit;
                 end;
 
@@ -210,6 +220,7 @@ begin
   Self.edt_nome.Enabled := False;
   self.edt_barras.Enabled := False;
   self.edt_preco.Enabled := False;
+  self.edt_custo.Enabled := False;
   self.edt_obs.Enabled := False;
   Self.btn_buscar.Enabled := False;
   self.btn_buscar1.Enabled := False;
@@ -238,6 +249,7 @@ begin
   Self.edt_nome.Enabled := True;
   self.edt_barras.Enabled := True;
   self.edt_preco.Enabled := True;
+  self.edt_custo.Enabled := True;
   self.edt_obs.Enabled := True;
   Self.btn_buscar.Enabled := True;
   self.btn_buscar1.Enabled := True;
@@ -260,7 +272,9 @@ end;
 
 procedure TFrmCadastroProduto.LimparCampos;
 begin
+  self.refGuardada := '';
   self.edt_cod.Clear;
+  self.edt_dataUltimaCompra.Clear;
   Self.edt_nome.Clear;
   self.edt_barras.Clear;
   self.edt_custo.Clear;
@@ -291,7 +305,7 @@ begin
 end;
 
 procedure TFrmCadastroProduto.Salvar;
-var incluido, excluido : string;
+var incluido, excluido, permitir : string;
 selected, k : integer;
 men : TForm;
 begin
@@ -312,18 +326,24 @@ begin
                         umProduto.setEstoque(StrToInt(self.edt_estoque.Text));
                         umProduto.setBarra(self.edt_barras.Text);
                         umaColecaoImagens.organizaLista;
-                        try
+
+                permitir := umController.getcontrollerProduto.pesquisaSalvar(umproduto.getReferencia);
+                  if (permitir = 'OK') or ( (permitir = 'EXISTE') and (refGuardada = umProduto.getReferencia)  ) then
+                      begin
                             incluido :=  umController.getControllerProduto.salvaProduto(umProduto,umaColecaoImagens);
                                  if incluido = 'OK' then
                                     if umProduto.getCodigo = 0 then
                                       ShowMessage(umProduto.getNome + ' incluído com sucesso!')
                                     else
                                       ShowMessage(umProduto.getNome + ' alterado com sucesso!');
-                            inherited;
-                        except
-                            ShowMessage('Não foi possível salvar o produto. Código de barras duplicado');
-                            self.edt_barras.SetFocus;
-                        end;
+                           inherited
+                      end
+                  else
+                     begin
+                         ShowMessage('Produto com referência já cadastrada!');
+                         edt_referencia.SetFocus;
+                     end;
+
               end;
         end
         else
@@ -347,7 +367,7 @@ begin
                        ShowMessage(QuotedStr(umProduto.getNome) + ' excluído com sucesso!')
                       end
                     else
-                      Showmessage('Não foi possível excluir o produto');
+                      Showmessage('Não foi possível excluir o produto! Há compras vinculadas a ele!');
                   inherited;
                   end;
             end;
@@ -534,6 +554,7 @@ begin
                     begin
                       ShowMessage('Valor digitado no preço de venda é inválido!' + #13 + 'Formato: 0,00 ou números inteiros');
                       self.edt_preco.SetFocus;
+                      self.edt_precoMin.Clear;
                     end
 
                  else if (verificaReal(self.edt_precoMin.Text) = False) then
@@ -788,7 +809,7 @@ begin
 
                 if selected = mrYes then
                   begin
-                      imagemAux := imagem.crieobj;
+                   //   imagemAux := imagem.crieobj;
                       imagemAux := umaColecaoImagens.getObj(1);
                         try
                          umController.getControllerProduto.excluirImagem(imagemAux);
@@ -816,7 +837,7 @@ begin
 
                 if selected = mrYes then
                   begin
-                      imagemAux := imagem.crieobj;
+                   //   imagemAux := imagem.crieobj;
                       imagemAux := umaColecaoImagens.getObj(2);
                        try
                         umController.getControllerProduto.excluirImagem(imagemAux);
@@ -844,7 +865,7 @@ begin
 
                 if selected = mrYes then
                   begin
-                      imagemAux := imagem.crieobj;
+                    //  imagemAux := imagem.crieobj;
                       imagemAux := umaColecaoImagens.getObj(3);
                        try
                         umController.getControllerProduto.excluirImagem(imagemAux);
@@ -872,7 +893,7 @@ begin
 
                 if selected = mrYes then
                   begin
-                      imagemAux := imagem.crieobj;
+                  //    imagemAux := imagem.crieobj;
                       imagemAux := umaColecaoImagens.getObj(4);
                         try
                           umController.getControllerProduto.excluirImagem(imagemAux);
@@ -900,7 +921,7 @@ begin
 
                 if selected = mrYes then
                   begin
-                      imagemAux := imagem.crieobj;
+                   //   imagemAux := imagem.crieobj;
                       imagemAux := umaColecaoImagens.getObj(5);
                         try
                          umController.getControllerProduto.excluirImagem(imagemAux);
@@ -966,6 +987,150 @@ begin
       umFrmConsultaImagem.ConhecaObj(umaColecaoImagens.getObj(5),umaColecaoImagens);
       umFrmConsultaImagem.ShowModal;
     end;
+end;
+
+procedure TFrmCadastroProduto.edt_precoExit(Sender: TObject);
+var aux : real;
+begin
+  inherited;
+  if verificaReal(edt_preco.Text) then
+  begin
+    if not verificaVirgula(edt_preco.Text) then
+       begin
+         aux := strtofloat(edt_preco.Text);
+         edt_preco.Text := floattostr(aux) + ',00';
+       end;
+    if strtofloat(edt_preco.Text) < 0 then
+     edt_preco.Text := '0,00';
+  end
+  else if not (verificaReal(edt_preco.Text)) and (edt_preco.Text <> '') then
+    begin
+     ShowMessage('Apenas números e vírgula - Formato: o,oo ');
+     edt_preco.Text := '0,00';
+     edt_preco.SetFocus;
+    end
+  else
+     edt_preco.Text := '0,00';
+
+  edt_preco.Text := duasCasas(edt_preco.Text);
+end;
+
+function TFrmCadastroProduto.verificaVirgula(texto: string): boolean;
+var k: integer;
+begin
+   result := false;
+      for k := 1 to length(texto) do
+        begin
+           if texto[k] = ',' then
+             begin
+               Result := true;
+               exit;
+             end;
+        end;
+end;
+
+procedure TFrmCadastroProduto.edt_precoMinExit(Sender: TObject);
+var aux : real;
+begin
+  inherited;
+  if verificaReal(edt_precoMin.Text) then
+  begin
+         aux := strtofloat(edt_precoMin.Text);
+         if aux > strtofloat(edt_preco.Text) then
+            begin
+             ShowMessage('Você não pode inserir um valor maior que o preço do produto!');
+             self.edt_precoMin.Text := edt_preco.Text;
+             edt_precoMin.SetFocus;
+            end
+         else
+             if not verificaVirgula(edt_precoMin.Text) then
+                 edt_precoMin.Text := edt_precoMin.Text + ',00';
+  if strtofloat(edt_precoMin.Text) < 0 then
+     edt_precoMin.Text := '0,00';
+  end
+  else if not (verificaReal(edt_precoMin.Text)) and (edt_precoMin.Text <> '') then
+    begin
+     ShowMessage('Apenas números e vírgula - Formato: o,oo ');
+     edt_precoMin.Text := '0,00';
+     edt_precoMin.SetFocus;
+    end
+  else
+     edt_precoMin.Text := '0,00';
+
+  edt_precoMin.Text := duasCasas(edt_precoMin.Text);
+end;
+
+procedure TFrmCadastroProduto.edt2Exit(Sender: TObject);
+var aux : real;
+begin
+  inherited;
+  if verificaReal(edt2.Text) then
+  begin
+    if not verificaVirgula(edt2.Text) then
+       begin
+         aux := strtofloat(edt2.Text);
+         edt2.Text := floattostr(aux) + ',00';
+       end;
+
+    if strtofloat(edt2.Text) > 100 then
+       edt2.Text := '100,00';
+
+     if strtofloat(edt2.Text) < 0 then
+     edt2.Text := '0,00';
+  end
+  else if not (verificaReal(edt2.Text)) and (edt2.Text <> '') then
+    begin
+     ShowMessage('Apenas números e vírgula - Formato: o,oo ');
+     edt2.Text := '0,00';
+     edt2.SetFocus;
+    end
+  else
+     edt2.Text := '0,00';
+
+  edt2.Text := duasCasas(edt2.Text);
+end;
+
+procedure TFrmCadastroProduto.edt_obsKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+   if (Key = #13) then
+      self.btn_salvar.Click;
+end;
+
+procedure TFrmCadastroProduto.edt_custoExit(Sender: TObject);
+var aux : real;
+begin
+  inherited;
+  if verificaReal(edt_custo.Text) then
+  begin
+    if not verificaVirgula(edt_custo.Text) then
+       begin
+         aux := strtofloat(edt_custo.Text);
+         edt_custo.Text := floattostr(aux) + ',00';
+       end;
+     if strtofloat(edt_custo.Text) < 0 then
+     edt_custo.Text := '0,00';
+  end
+  else if not (verificaReal(edt_custo.Text)) and (edt_custo.Text <> '') then
+    begin
+     ShowMessage('Apenas números e vírgula - Formato: o,oo ');
+     edt_custo.Text := '0,00';
+     edt_custo.SetFocus;
+    end
+  else
+     edt_custo.Text := '0,00';
+
+  edt_custo.Text := duasCasas(edt_custo.Text);
+end;
+
+function TFrmCadastroProduto.duasCasas(texto: string): string;
+var numero: real;
+texto2: string;
+begin
+  numero := strtofloat(texto);
+  texto2 := FloatToStrF(numero,ffnumber,12,2);
+  result := StringReplace(texto2,'.','',[rfReplaceAll]);
 end;
 
 end.

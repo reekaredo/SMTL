@@ -1,8 +1,8 @@
 inherited FrmCadastroCondicao: TFrmCadastroCondicao
-  Left = 430
-  Top = 233
-  Width = 715
-  Caption = 'Cadastro de Condi'#231#227'o de pagamento'
+  Left = 472
+  Top = 204
+  Caption = 'Tr'#234's Lagoas M'#243'veis - Cadastro de Condi'#231#227'o de pagamento'
+  ClientWidth = 699
   OldCreateOrder = True
   OnClose = FormClose
   PixelsPerInch = 96
@@ -64,9 +64,9 @@ inherited FrmCadastroCondicao: TFrmCadastroCondicao
   object label_forma: TLabel [8]
     Left = 320
     Top = 142
-    Width = 54
+    Width = 28
     Height = 13
-    Caption = 'Forma Pgto'
+    Caption = 'Conta'
     Visible = False
   end
   object btn_buscar: TSpeedButton [9]
@@ -281,13 +281,13 @@ inherited FrmCadastroCondicao: TFrmCadastroCondicao
   inherited btn_salvar: TButton
     Left = 464
     Top = 392
-    TabOrder = 7
+    TabOrder = 9
     Visible = False
   end
   inherited btn_sair: TButton
     Left = 568
     Top = 392
-    TabOrder = 8
+    TabOrder = 10
   end
   object edt_nome: TEdit
     Left = 176
@@ -303,6 +303,7 @@ inherited FrmCadastroCondicao: TFrmCadastroCondicao
     MaxLength = 60
     ParentFont = False
     TabOrder = 1
+    OnKeyPress = edt_nomeKeyPress
   end
   object listView1: TListView
     Left = 48
@@ -336,7 +337,7 @@ inherited FrmCadastroCondicao: TFrmCadastroCondicao
       end>
     GridLines = True
     RowSelect = True
-    TabOrder = 9
+    TabOrder = 8
     ViewStyle = vsReport
     Visible = False
   end
@@ -393,6 +394,7 @@ inherited FrmCadastroCondicao: TFrmCadastroCondicao
     ParentFont = False
     TabOrder = 5
     Visible = False
+    OnExit = edt_porcentagemExit
     OnKeyPress = edt_porcentagemKeyPress
   end
   object edt_codForma: TEdit
@@ -407,7 +409,7 @@ inherited FrmCadastroCondicao: TFrmCadastroCondicao
     Font.Name = 'Arial'
     Font.Style = []
     ParentFont = False
-    TabOrder = 10
+    TabOrder = 6
     Visible = False
   end
   object edt_forma: TEdit
@@ -422,7 +424,7 @@ inherited FrmCadastroCondicao: TFrmCadastroCondicao
     Font.Name = 'Arial'
     Font.Style = []
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 7
     Visible = False
   end
 end

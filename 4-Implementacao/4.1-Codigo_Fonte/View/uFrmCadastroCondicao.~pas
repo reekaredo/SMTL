@@ -35,6 +35,8 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btn_deleteClick(Sender: TObject);
     procedure btn_sairClick(Sender: TObject);
+    procedure edt_porcentagemExit(Sender: TObject);
+    procedure edt_nomeKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     umaCondicao : Condicao;
@@ -46,6 +48,7 @@ type
     dias: Integer;
     salvaCondicao: Boolean;
   protected
+    nomeGuardado: string;
     procedure Sair;  override;
     procedure Salvar; override;
     procedure CarregaEdit; override;
@@ -53,6 +56,8 @@ type
     function verificaInteiro(texto: string): Boolean;
     function verificaReal(texto: string): Boolean;
     function validaCampos: Boolean;
+    function verificaVirgula(texto: string): boolean;
+    function duasCasas(texto: string): string;
   public
     { Public declarations }
     procedure ConhecaObj(pObj : TObject; pController: controller); override;
@@ -113,6 +118,7 @@ begin
   self.LimparCampos;
     if umaCondicao.getCodigo <> 0 then
         begin
+            nomeGuardado := umaCondicao.getNome;
             Self.CarregaEdit;
         end;
 
@@ -146,6 +152,7 @@ end;
 procedure TFrmCadastroCondicao.LimparCampos;
 var k: Integer;
 begin
+  self.nomeGuardado:= '';
   self.edt_nome.Clear;
   self.edt_numero.Text := '1';
   self.edt_dias.Clear;
@@ -184,16 +191,25 @@ begin
             else
                 begin
                     umaCondicao.setNome(self.edt_nome.Text);
-                    incluido := umController.getControllerCondicao.salvaCondicao(umaCondicao);
-                       if incluido = 'OK' then
-                          if umaCondicao.getCodigo = 0 then
-                            ShowMessage(umaCondicao.getNome + ' incluído com sucesso!')
+                       permitir := umcontroller.getControllerCondicao.pesquisaSalvar(umaCondicao.getNome);
+                        if (permitir = 'OK') or ( (permitir = 'EXISTE') and (nomeGuardado = umaCondicao.getNome)  ) then
+                          begin
+                              incluido := umController.getControllerCondicao.salvaCondicao(umaCondicao);
+                                 if incluido = 'OK' then
+                                    if umaCondicao.getCodigo = 0 then
+                                      ShowMessage(umaCondicao.getNome + ' incluído com sucesso!')
+                                    else
+                                      ShowMessage(umaCondicao.getNome + ' alterado com sucesso!');
+                           umController.getControllerCondicao.carregaCondicao(umaCondicao);
+                           self.edt_cod.Text := IntToStr(umaCondicao.getCodigo);
+                           self.MostraCampos;
+                           btn_salvar.Visible := True;
+                          end
                           else
-                            ShowMessage(umaCondicao.getNome + ' alterado com sucesso!');
-                 umController.getControllerCondicao.carregaCondicao(umaCondicao);
-                 self.edt_cod.Text := IntToStr(umaCondicao.getCodigo);
-                 self.MostraCampos;
-                 btn_salvar.Visible := True;
+                            begin
+                               ShowMessage('Condição já cadastrada');
+                               self.edt_nome.SetFocus;
+                            end;
                  //   inherited;
                 end;
         end
@@ -223,7 +239,9 @@ begin
                         else if permitir = 'CLIENTE' then
                             ShowMessage('Não foi possível excluir a condição! Há clientes vinculados a ela')
                         else if permitir = 'FORNECEDOR' then
-                            ShowMessage('Não foi possível excluir a condição! Há fornecedores vinculados a ela');
+                            ShowMessage('Não foi possível excluir a condição! Há fornecedores vinculados a ela')
+                        else if permitir = 'COMPRA' then
+                            ShowMessage('Não foi possível excluir a condição! Há compras vinculadas a ela');
 
                   inherited;
                   end;
@@ -246,7 +264,6 @@ begin
   if perc < 100 then
       begin
         ShowMessage('Complete as parcelas primeiro');
-        edt_dias.SetFocus;
       end
   else
       begin
@@ -301,6 +318,8 @@ end;
 procedure TFrmCadastroCondicao.btn_adicionarClick(Sender: TObject);
 var item : TListItem;
 aux: Integer;
+percent1: real;
+aux2: string;
 begin
 // adicionando uma parcela
   if validaCampos = True then
@@ -322,7 +341,11 @@ begin
             umaParcela.setCondicao(StrToInt(edt_cod.text));
             umaParcela.setNumero(StrToInt(edt_numero.Text));
             umaParcela.setDias(StrToInt(edt_dias.Text));
-            umaParcela.setPercentual(StrToFloat(edt_porcentagem.Text));
+            percent1 := StrToFloat(edt_porcentagem.Text);
+            aux2:= FloatToStrF(percent1,ffnumber,12,2);
+            umaParcela.setPercentual(StrtoFloat(aux2));
+
+          //  umaParcela.setPercentual(StrToFloat(edt_porcentagem.Text));
             umaParcela.getForma.setCodigo(StrToInt(edt_codForma.Text));
             umaParcela.setCode(edt_cod.Text + edt_numero.Text);
 
@@ -330,7 +353,7 @@ begin
             item.Caption := edt_cod.Text;
             item.SubItems.Add(edt_numero.Text);
             item.SubItems.Add(edt_dias.Text);
-            item.SubItems.Add(edt_porcentagem.Text + '%');
+            item.SubItems.Add(aux2 + '%');
             item.SubItems.Add(edt_codForma.Text);
             item.SubItems.Add(edt_forma.Text);
 
@@ -470,10 +493,17 @@ end;
 procedure TFrmCadastroCondicao.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  inherited;
-    LimparCampos;
-    umaCondicao := Condicao.crieobj;       
-    btn_salvar.Visible := False;
+  if (self.listView1.Items.Count <= 0) and (edt_cod.Text <> '') and (perc < 100) and (self.btn_salvar.Caption = '&Salvar') then
+    begin
+      Action := caNone;
+      btn_salvar.Click;
+    end
+  else
+    begin            
+      LimparCampos;
+      umaCondicao := Condicao.crieobj;
+      btn_salvar.Visible := False;
+    end;
 end;
 
 procedure TFrmCadastroCondicao.btn_deleteClick(Sender: TObject);
@@ -500,6 +530,7 @@ begin
               edt_dias.Text := IntToStr(parc.getDias);
 
               listView1.ItemFocused.Delete;
+              edt_porcentagem.Text := floattostr(100 - perc);
               umController.getControllerParcela.excluiParcela(parc);
             end
         else
@@ -517,6 +548,66 @@ begin
     else
         self.btn_salvar.Click;    }
     inherited;
+end;
+
+procedure TFrmCadastroCondicao.edt_porcentagemExit(Sender: TObject);
+var aux : real;
+begin
+  inherited;
+  if verificaReal(edt_porcentagem.Text) then
+  begin
+    if not verificaVirgula(edt_porcentagem.Text) then
+       begin
+         aux := strtofloat(edt_porcentagem.Text);
+         edt_porcentagem.Text := floattostr(aux) + ',00';
+       end;
+     if strtofloat(edt_porcentagem.Text) > 100 then
+     edt_porcentagem.Text := '100,00';
+
+     if strtofloat(edt_porcentagem.Text) < 0 then
+     edt_porcentagem.Text := '0,00';
+  end
+  else if not (verificaReal(edt_porcentagem.Text)) and (edt_porcentagem.Text <> '') then
+    begin
+     ShowMessage('Apenas números e vírgula - Formato: o,oo ');
+     edt_porcentagem.Text := '0,00';
+     edt_porcentagem.SetFocus;
+    end
+  else
+     edt_porcentagem.Text := '0,00';
+
+  edt_porcentagem.Text := duasCasas(edt_porcentagem.Text);
+end;
+
+function TFrmCadastroCondicao.verificaVirgula(texto: string): boolean;
+var k: integer;
+begin
+   result := false;
+      for k := 1 to length(texto) do
+        begin
+           if texto[k] = ',' then
+             begin
+               Result := true;
+               exit;
+             end;
+        end;
+end;
+
+procedure TFrmCadastroCondicao.edt_nomeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+      if (Key = #13) then
+      self.btn_ok.Click;
+end;
+
+function TFrmCadastroCondicao.duasCasas(texto: string): string;
+var numero: real;
+texto2: string;
+begin
+  numero := strtofloat(texto);
+  texto2 := FloatToStrF(numero,ffnumber,12,2);
+  result := StringReplace(texto2,'.','',[rfReplaceAll]);
 end;
 
 end.

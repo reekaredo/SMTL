@@ -1,10 +1,12 @@
 inherited FrmCadastroCompra: TFrmCadastroCompra
-  Top = 38
-  Width = 1176
-  Height = 788
-  Caption = 'Nova compra'
+  Left = 195
+  Top = 53
+  Caption = 'Tr'#234's Lagoas M'#243'veis - Nova compra'
+  ClientHeight = 751
+  ClientWidth = 1160
+  Constraints.MinHeight = 750
+  Constraints.MinWidth = 1176
   OldCreateOrder = True
-  Position = poScreenCenter
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
@@ -133,6 +135,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Font.Name = 'Arial'
     Font.Style = []
     ParentFont = False
+    OnClick = btn_removeClick
   end
   object Label6: TLabel [13]
     Left = 104
@@ -720,21 +723,6 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Top = 696
     TabOrder = 54
   end
-  object edt_dataChegada: TEdit
-    Left = 984
-    Top = 49
-    Width = 105
-    Height = 25
-    CharCase = ecUpperCase
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Arial'
-    Font.Style = []
-    MaxLength = 20
-    ParentFont = False
-    TabOrder = 8
-  end
   object edt_codCondicao: TEdit
     Left = 408
     Top = 696
@@ -846,6 +834,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 20
     ParentFont = False
     TabOrder = 42
+    Text = '0,00'
+    OnExit = edt_ValorUnitarioExit
+    OnKeyPress = edt_ValorUnitarioKeyPress
   end
   object ListView1: TListView
     Left = 64
@@ -902,6 +893,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
         Caption = 'Aliq IPI'
       end>
     GridLines = True
+    RowSelect = True
     TabOrder = 49
     ViewStyle = vsReport
   end
@@ -926,7 +918,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Left = 96
     Top = 298
     Width = 201
-    Height = 25
+    Height = 24
     CharCase = ecUpperCase
     Enabled = False
     Font.Charset = ANSI_CHARSET
@@ -978,6 +970,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 50
     ParentFont = False
     TabOrder = 9
+    Text = '0,00'
+    OnExit = edt_baseICMSExit
+    OnKeyPress = edt_baseICMSKeyPress
   end
   object edt_valorICMS: TEdit
     Left = 224
@@ -993,6 +988,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 50
     ParentFont = False
     TabOrder = 10
+    Text = '0,00'
+    OnExit = edt_valorICMSExit
+    OnKeyPress = edt_valorICMSKeyPress
   end
   object edt_baseICMSsubst: TEdit
     Left = 376
@@ -1008,6 +1006,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 50
     ParentFont = False
     TabOrder = 11
+    Text = '0,00'
+    OnExit = edt_baseICMSsubstExit
+    OnKeyPress = edt_baseICMSsubstKeyPress
   end
   object edt_desconto: TEdit
     Left = 376
@@ -1024,6 +1025,8 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     ParentFont = False
     TabOrder = 16
     Text = '0,00'
+    OnExit = edt_descontoExit
+    OnKeyPress = edt_descontoKeyPress
   end
   object edt_valortotalProdutos: TEdit
     Left = 792
@@ -1039,6 +1042,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 50
     ParentFont = False
     TabOrder = 13
+    Text = '0,00'
+    OnExit = edt_valortotalProdutosExit
+    OnKeyPress = edt_valortotalProdutosKeyPress
   end
   object edt_valorFrete: TEdit
     Left = 64
@@ -1055,6 +1061,8 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     ParentFont = False
     TabOrder = 14
     Text = '0,00'
+    OnExit = edt_valorFreteExit
+    OnKeyPress = edt_valorFreteKeyPress
   end
   object edt_ValorSeguro: TEdit
     Left = 224
@@ -1071,6 +1079,8 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     ParentFont = False
     TabOrder = 15
     Text = '0,00'
+    OnExit = edt_ValorSeguroExit
+    OnKeyPress = edt_ValorSeguroKeyPress
   end
   object edt_outrasDespesas: TEdit
     Left = 528
@@ -1087,6 +1097,8 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     ParentFont = False
     TabOrder = 17
     Text = '0,00'
+    OnExit = edt_outrasDespesasExit
+    OnKeyPress = edt_outrasDespesasKeyPress
   end
   object edt_totalIPI: TEdit
     Left = 792
@@ -1103,6 +1115,8 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     ParentFont = False
     TabOrder = 18
     Text = '0,00'
+    OnExit = edt_totalIPIExit
+    OnKeyPress = edt_totalIPIKeyPress
   end
   object edt_ValorTotal: TEdit
     Left = 944
@@ -1118,6 +1132,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 50
     ParentFont = False
     TabOrder = 19
+    Text = '0,00'
+    OnExit = edt_ValorTotalExit
+    OnKeyPress = edt_ValorTotalKeyPress
   end
   object edt_NumeroNota: TEdit
     Left = 208
@@ -1133,21 +1150,6 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 50
     ParentFont = False
     TabOrder = 1
-  end
-  object edt_dataEmissao: TEdit
-    Left = 872
-    Top = 49
-    Width = 97
-    Height = 25
-    CharCase = ecUpperCase
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Arial'
-    Font.Style = []
-    MaxLength = 20
-    ParentFont = False
-    TabOrder = 7
   end
   object edt_serieNota: TEdit
     Left = 336
@@ -1212,7 +1214,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Height = 21
     ItemHeight = 13
     TabOrder = 3
-    Text = 'Tipo da nota'
+    Text = 'Selecione'
+    OnExit = cbTipoNotaExit
+    OnKeyPress = cbTipoNotaKeyPress
     Items.Strings = (
       '0-Entrada'
       '1-Sa'#237'da')
@@ -1231,6 +1235,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 50
     ParentFont = False
     TabOrder = 12
+    Text = '0,00'
+    OnExit = edt_valorIcmsSubstExit
+    OnKeyPress = edt_valorIcmsSubstKeyPress
   end
   object edt_antt: TEdit
     Left = 480
@@ -1238,6 +1245,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Width = 105
     Height = 25
     CharCase = ecUpperCase
+    Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -15
@@ -1245,6 +1253,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Font.Style = []
     MaxLength = 50
     ParentFont = False
+    ReadOnly = True
     TabOrder = 24
   end
   object edt_placaVeiculo: TEdit
@@ -1253,6 +1262,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Width = 153
     Height = 25
     CharCase = ecUpperCase
+    Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -15
@@ -1260,6 +1270,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Font.Style = []
     MaxLength = 50
     ParentFont = False
+    ReadOnly = True
     TabOrder = 25
   end
   object cbFrete: TComboBox
@@ -1270,6 +1281,8 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     ItemHeight = 13
     TabOrder = 23
     Text = 'Selecione'
+    OnExit = cbFreteExit
+    OnKeyPress = cbFreteKeyPress
     Items.Strings = (
       '0-Emitente'
       '1-Destinatario')
@@ -1280,6 +1293,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Width = 145
     Height = 25
     CharCase = ecUpperCase
+    Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -15
@@ -1287,6 +1301,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Font.Style = []
     MaxLength = 50
     ParentFont = False
+    ReadOnly = True
     TabOrder = 26
   end
   object edt_CNPJ: TEdit
@@ -1295,6 +1310,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Width = 153
     Height = 25
     CharCase = ecUpperCase
+    Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -15
@@ -1302,6 +1318,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     Font.Style = []
     MaxLength = 50
     ParentFont = False
+    ReadOnly = True
     TabOrder = 27
   end
   object edt_quantidade: TEdit
@@ -1318,21 +1335,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 50
     ParentFont = False
     TabOrder = 28
-  end
-  object edt_especie: TEdit
-    Left = 184
-    Top = 346
-    Width = 169
-    Height = 25
-    CharCase = ecUpperCase
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Arial'
-    Font.Style = []
-    MaxLength = 50
-    ParentFont = False
-    TabOrder = 29
+    Text = '1'
+    OnExit = edt_quantidadeExit
+    OnKeyPress = edt_quantidadeKeyPress
   end
   object edt_pesobruto: TEdit
     Left = 696
@@ -1349,6 +1354,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     ParentFont = False
     TabOrder = 32
     Text = '0,00'
+    OnExit = edt_pesobrutoExit
   end
   object edt_numeracao: TEdit
     Left = 528
@@ -1395,6 +1401,7 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     ParentFont = False
     TabOrder = 33
     Text = '0,00'
+    OnExit = edt_pesoLiquidoExit
   end
   object edt_cfop: TEdit
     Left = 424
@@ -1474,6 +1481,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 20
     ParentFont = False
     TabOrder = 44
+    Text = '0,00'
+    OnExit = edt_baseICMSitemExit
+    OnKeyPress = edt_baseICMSitemKeyPress
   end
   object edt_ICMSitem: TEdit
     Left = 784
@@ -1489,6 +1499,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 20
     ParentFont = False
     TabOrder = 45
+    Text = '0,00'
+    OnExit = edt_ICMSitemExit
+    OnKeyPress = edt_ICMSitemKeyPress
   end
   object edt_ipiItem: TEdit
     Left = 840
@@ -1504,6 +1517,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 20
     ParentFont = False
     TabOrder = 46
+    Text = '0,00'
+    OnExit = edt_ipiItemExit
+    OnKeyPress = edt_ipiItemKeyPress
   end
   object edt_aliqICMS: TEdit
     Left = 896
@@ -1519,6 +1535,9 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 20
     ParentFont = False
     TabOrder = 47
+    Text = '0,00'
+    OnExit = edt_aliqICMSExit
+    OnKeyPress = edt_aliqICMSKeyPress
   end
   object edt_aliqIPI: TEdit
     Left = 968
@@ -1534,5 +1553,49 @@ inherited FrmCadastroCompra: TFrmCadastroCompra
     MaxLength = 20
     ParentFont = False
     TabOrder = 48
+    Text = '0,00'
+    OnExit = edt_aliqIPIExit
+    OnKeyPress = edt_aliqIPIKeyPress
+  end
+  object data_emissao: TDateTimePicker
+    Left = 872
+    Top = 49
+    Width = 97
+    Height = 25
+    Date = 42633.698515150460000000
+    Time = 42633.698515150460000000
+    TabOrder = 7
+    OnChange = data_emissaoChange
+  end
+  object data_chegada: TDateTimePicker
+    Left = 984
+    Top = 49
+    Width = 105
+    Height = 25
+    Date = 42633.699400590270000000
+    Time = 42633.699400590270000000
+    TabOrder = 8
+    OnChange = data_chegadaChange
+  end
+  object cb_especie: TComboBox
+    Left = 184
+    Top = 346
+    Width = 169
+    Height = 24
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ItemHeight = 16
+    ParentFont = False
+    TabOrder = 29
+    Text = 'Selecione'
+    OnExit = cb_especieExit
+    OnKeyPress = cb_especieKeyPress
+    Items.Strings = (
+      '0-CAIXA'
+      '1-VOLUME'
+      '2-PACOTE')
   end
 end
