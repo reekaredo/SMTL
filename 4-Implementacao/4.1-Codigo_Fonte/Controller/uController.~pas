@@ -6,7 +6,8 @@ interface
   uControllerEstado, uControllerFornecedor, uControllerCliente, uControllerCidade,
   uControllerPais, uControllerProduto, uControllerForma, uControllerUsuario,
   uControllerGrupo, uControllerFuncionario, uControllerCondicao, uControllerParcela,
-  uControllerTransportadora, ucontrollerItemCompra, uControllerCompra;
+  uControllerTransportadora, ucontrollerItemCompra, uControllerCompra, uControllerVeiculo,
+  uControllerItemVenda, uControllerVenda, uControllerContaPagar, uControllerContaReceber, uControllerCaixa, uControllerFluxo;
 
   type controller = class
 
@@ -30,16 +31,44 @@ interface
     umControllerTransportadora: controllerTransportadora;
     umControllerItemCompra: controllerItemCompra;
     umControllerCompra: controllerCompra;
+    umControllerVeiculo: controllerVeiculo;
+    umControllerItemVenda: controllerItemVenda;
+    umControllerVenda: controllerVenda;
+    umControllerContaPagar: ControllerContaPagar;
+    umControllerContaReceber: ControllerContaReceber;
+    umControllerCaixa: ControllerCaixa;
+    umControllerFluxo: controllerFluxo;
 
   public
     constructor CrieObj;
     destructor destrua_se;
+
+    procedure setControllerFluxo (pControllerFluxo: ControllerFluxo);
+    function getControllerFluxo : ControllerFluxo;
+
+    procedure setControllerCaixa (pControllerCaixa: ControllerCaixa);
+    function getControllerCaixa : ControllerCaixa;
+
+    procedure setControllerContaReceber (pControllerContaReceber: ControllerContaReceber);
+    function getControllerContaReceber : ControllerContaReceber;
+
+    procedure setControllerContaPagar (pControllerContaPagar: ControllerContaPagar);
+    function getControllerContaPagar : ControllerContaPagar;
+
+    procedure setControllerVenda (pControllerVenda: controllerVenda);
+    function getControllerVenda : controllerVenda;
+
+    procedure setControllerVeiculo (pControllerVeiculo: controllerVeiculo);
+    function getControllerVeiculo : controllerVeiculo;
 
     procedure setControllerCompra (pControllerCompra: controllerCompra);
     function getControllerCompra : controllerCompra;
 
     procedure setControllerItemCompra (pControllerItemCompra: controllerItemCompra);
     function getControllerItemCompra : controllerItemCompra;
+
+    procedure setControllerItemVenda (pControllerItemVenda: controllerItemVenda);
+    function getControllerItemVenda : controllerItemVenda;
 
     procedure setControllerTransportadora (pControllerTransportadora: controllerTransportadora);
     function getControllerTransportadora : controllerTransportadora;
@@ -108,6 +137,13 @@ begin
   umControllerTransportadora := controllerTransportadora.CrieObj;
   umControllerItemCompra := controllerItemCompra.CrieObj;
   umControllerCompra := controllerCompra.CrieObj;
+  umControllerVeiculo := controllerVeiculo.CrieObj;
+  umControllerItemVenda := controllerItemVenda.CrieObj;
+  umControllerVenda := controllervenda.CrieObj;
+  umControllerContaPagar := controllerContaPagar.CrieObj;
+  umControllerContaReceber := controllerContaReceber.CrieObj;
+  umControllerCaixa := controllerCaixa.CrieObj;
+  umControllerFluxo := controllerFluxo.CrieObj;
 end;
 
 destructor controller.destrua_se;
@@ -128,6 +164,13 @@ begin
   umControllerParcela.destrua_se;
   umControllerTransportadora.destrua_se;
   umControllerItemCompra.destrua_se;
+  umControllerCompra.destrua_se;
+  umControllerVeiculo.destrua_se;
+  umControllerItemVenda.destrua_se;
+  umControllerVenda.destrua_se;
+  umControllerContaPagar.destrua_se;
+  umControllerContaReceber.destrua_se;
+  umControllerCaixa.destrua_se;
 end;
 
 // --------------- setters and getters -> PRODUTO ------------------
@@ -322,6 +365,87 @@ begin
    self.umControllerCompra := pControllerCompra;
 end;
 
+// ------------ setters and getters -> VEICULO ------------------
+function controller.getControllerVeiculo: controllerVeiculo;
+begin
+   result := self.umControllerVeiculo;
+end;
+
+procedure controller.setControllerVeiculo(
+  pControllerVeiculo: controllerVeiculo);
+begin
+    self.umControllerVeiculo := pControllerVeiculo;
+end;
+
+// ------------ setters and getters -> ITEM VENDA ------------------
+function controller.getControllerItemVenda: controllerItemVenda;
+begin
+  Result := self.umControllerItemVenda;
+end;
+
+procedure controller.setControllerItemVenda(
+  pControllerItemVenda: controllerItemVenda);
+begin
+  self.umControllerItemVenda := pControllerItemVenda;
+end;
+
+// ------------ setters and getters ->  VENDA ------------------
+function controller.getControllerVenda: controllerVenda;
+begin
+  result := umControllerVenda;
+end;
+
+procedure controller.setControllerVenda(pControllerVenda: controllerVenda);
+begin
+   self.umControllerVenda := pControllerVenda;
+end;
+
+// ------------ setters and getters ->  CONTA A PAGAR ------------------
+function controller.getControllerContaPagar: ControllerContaPagar;
+begin
+   result := self.umControllerContaPagar;
+end;
+
+procedure controller.setControllerContaPagar(
+  pControllerContaPagar: ControllerContaPagar);
+begin
+   self.umControllerContaPagar := pControllerContaPagar;
+end;
+
+// ------------ setters and getters ->  CONTA A RECEBER ------------------
+function controller.getControllerContaReceber: ControllerContaReceber;
+begin
+   result := self.umControllerContaReceber;
+end;
+
+procedure controller.setControllerContaReceber(
+  pControllerContaReceber: ControllerContaReceber);
+begin
+    self.umControllerContaReceber := pControllerContaReceber;
+end;
+
+ // ------------ setters and getters ->  CAIXA ------------------
+function controller.getControllerCaixa: ControllerCaixa;
+begin
+   result := self.umControllerCaixa;
+end;
+
+procedure controller.setControllerCaixa(pControllerCaixa: ControllerCaixa);
+begin
+  self.umControllerCaixa := pControllerCaixa;
+end;
+
+function controller.getControllerFluxo: ControllerFluxo;
+begin
+   Result := self.umControllerFluxo;
+end;
+
+procedure controller.setControllerFluxo(pControllerFluxo: ControllerFluxo);
+begin
+   self.umControllerFluxo := pControllerFluxo;
+end;
+
 end.
+
 //----------- FIM DA CLASSE ---------------------------- FIM DA CLASSE --------
 

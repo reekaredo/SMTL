@@ -19,7 +19,9 @@ interface
     function salvaForma(pForma : Forma) : string;
     function excluiForma(pForma : Forma) : string;
     function pesquisaForma(chave : string) : string;
-    function pesquisaDependencia(chave : integer) : string;     
+    function pesquisaDependencia(chave : integer) : string;
+    function pesquisaSalvar(chave : string) : string;
+    procedure alteraSaldo(cod: integer; valor: real; tipo: integer);    
 end;
 
 implementation
@@ -92,6 +94,27 @@ begin
           end;
 
   Encerra:
+end;
+
+function controllerForma.pesquisaSalvar(chave: string): string;
+var mSQL : string;
+aux : integer;
+begin
+  // pesquisa na tabela formas de pagamento se há o nome já cadastrado
+      mSQL := 'select * from forma where forma_nome = ' + quotedstr(chave);
+        aux := umDao.sqlSalvar(mSQL,1);
+        if aux = 0 then
+            Result := 'OK'
+        else
+          begin
+            Result := 'EXISTE';
+           end;  
+end;
+
+procedure controllerForma.alteraSaldo(cod: integer; valor: real;
+  tipo: integer);
+begin
+    umdao.alteraSaldo(cod,valor,tipo);
 end;
 
 end.
