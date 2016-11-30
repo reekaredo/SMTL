@@ -1,9 +1,9 @@
 object DataModule1: TDataModule1
   OldCreateOrder = False
-  Left = 1686
-  Top = 244
-  Height = 537
-  Width = 1019
+  Left = 520
+  Top = 130
+  Height = 683
+  Width = 641
   object con_banco: TMyConnection
     Database = 'vendas'
     Username = 'root'
@@ -15,8 +15,8 @@ object DataModule1: TDataModule1
   end
   object ds_paises: TMyDataSource
     DataSet = SQL_pais
-    Left = 24
-    Top = 136
+    Left = 32
+    Top = 144
   end
   object SQL_pais: TMyQuery
     SQLInsert.Strings = (
@@ -50,7 +50,7 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from paises')
-    Left = 24
+    Left = 32
     Top = 88
     object intgrfldSQL_paispais_id: TIntegerField
       AutoGenerateValue = arAutoInc
@@ -103,7 +103,7 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from estados')
-    Left = 112
+    Left = 120
     Top = 88
     object intgrfldSQL_estadoest_id: TIntegerField
       AutoGenerateValue = arAutoInc
@@ -127,8 +127,8 @@ object DataModule1: TDataModule1
   end
   object ds_estados: TMyDataSource
     DataSet = SQL_estado
-    Left = 112
-    Top = 136
+    Left = 120
+    Top = 144
   end
   object SQL_cidade: TMyQuery
     SQLInsert.Strings = (
@@ -187,7 +187,7 @@ object DataModule1: TDataModule1
   object ds_cidades: TMyDataSource
     DataSet = SQL_cidade
     Left = 200
-    Top = 136
+    Top = 144
   end
   object SQL_cliente: TMyQuery
     SQLInsert.Strings = (
@@ -332,7 +332,7 @@ object DataModule1: TDataModule1
   object ds_clientes: TMyDataSource
     DataSet = SQL_cliente
     Left = 288
-    Top = 136
+    Top = 144
   end
   object SQL_fornecedor: TMyQuery
     SQLInsert.Strings = (
@@ -480,7 +480,7 @@ object DataModule1: TDataModule1
   object ds_fornecedores: TMyDataSource
     DataSet = SQL_fornecedor
     Left = 376
-    Top = 136
+    Top = 144
   end
   object SQL_marca: TMyQuery
     SQLInsert.Strings = (
@@ -512,8 +512,8 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from marcas')
-    Left = 208
-    Top = 224
+    Left = 120
+    Top = 216
     object intgrfldSQL_marcamarca_id: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'marca_id'
@@ -527,7 +527,7 @@ object DataModule1: TDataModule1
   end
   object ds_marcas: TMyDataSource
     DataSet = SQL_marca
-    Left = 208
+    Left = 120
     Top = 272
   end
   object SQL_produto: TMyQuery
@@ -670,7 +670,7 @@ object DataModule1: TDataModule1
   object ds_produtos: TMyDataSource
     DataSet = SQL_produto
     Left = 464
-    Top = 136
+    Top = 144
   end
   object SQL_usuario: TMyQuery
     SQLInsert.Strings = (
@@ -711,8 +711,8 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from usuarios')
-    Left = 24
-    Top = 224
+    Left = 384
+    Top = 336
     object intgrfldSQL_usuariouser_id: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'user_id'
@@ -743,15 +743,15 @@ object DataModule1: TDataModule1
   end
   object ds_usuarios: TMyDataSource
     DataSet = SQL_usuario
-    Left = 24
-    Top = 272
+    Left = 384
+    Top = 392
   end
   object SQL_forma: TMyQuery
     SQLInsert.Strings = (
       'INSERT INTO forma'
-      '  (forma_nome)'
+      '  (forma_nome, forma_saldo)'
       'VALUES'
-      '  (:forma_nome)')
+      '  (:forma_nome, :forma_saldo)')
     SQLDelete.Strings = (
       'DELETE FROM forma'
       'WHERE'
@@ -759,11 +759,11 @@ object DataModule1: TDataModule1
     SQLUpdate.Strings = (
       'UPDATE forma'
       'SET'
-      '  forma_nome = :forma_nome'
+      '  forma_nome = :forma_nome, forma_saldo = :forma_saldo'
       'WHERE'
       '  forma_id = :Old_forma_id')
     SQLRefresh.Strings = (
-      'SELECT forma_nome FROM forma'
+      'SELECT forma_nome, forma_saldo FROM forma'
       'WHERE'
       '  forma_id = :forma_id')
     SQLLock.Strings = (
@@ -776,8 +776,8 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from forma')
-    Left = 296
-    Top = 272
+    Left = 200
+    Top = 216
     object intgrfldSQL_formaforma_id: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'forma_id'
@@ -788,11 +788,14 @@ object DataModule1: TDataModule1
       Origin = 'forma.forma_nome'
       Size = 30
     end
+    object SQL_formaforma_saldo: TFloatField
+      FieldName = 'forma_saldo'
+    end
   end
   object ds_forma: TMyDataSource
     DataSet = SQL_forma
-    Left = 296
-    Top = 224
+    Left = 200
+    Top = 272
   end
   object SQL_grupo: TMyQuery
     SQLInsert.Strings = (
@@ -824,8 +827,8 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from grupos')
-    Left = 552
-    Top = 88
+    Left = 32
+    Top = 336
     object intgrfldSQL_grupogrupo_id: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'grupo_id'
@@ -839,8 +842,8 @@ object DataModule1: TDataModule1
   end
   object ds_grupos: TMyDataSource
     DataSet = SQL_grupo
-    Left = 552
-    Top = 136
+    Left = 32
+    Top = 392
   end
   object SQL_funcionario: TMyQuery
     SQLInsert.Strings = (
@@ -886,8 +889,8 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from funcionarios')
-    Left = 120
-    Top = 224
+    Left = 32
+    Top = 216
     object intgrfldSQL_funcionariofunc_id: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'func_id'
@@ -949,7 +952,7 @@ object DataModule1: TDataModule1
   end
   object ds_funcionarios: TMyDataSource
     DataSet = SQL_funcionario
-    Left = 120
+    Left = 32
     Top = 272
   end
   object SQL_condicoes: TMyQuery
@@ -982,8 +985,8 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from condicoes')
-    Left = 392
-    Top = 224
+    Left = 288
+    Top = 216
     object intgrfldSQL_condicoescond_id: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'cond_id'
@@ -997,7 +1000,7 @@ object DataModule1: TDataModule1
   end
   object ds_condicoes: TMyDataSource
     DataSet = SQL_condicoes
-    Left = 392
+    Left = 288
     Top = 272
   end
   object SQL_parcela: TMyQuery
@@ -1045,8 +1048,8 @@ object DataModule1: TDataModule1
     Connection = con_banco
     SQL.Strings = (
       'select * from parcelas')
-    Left = 480
-    Top = 224
+    Left = 376
+    Top = 216
     object intgrfldSQL_parcelaparc_condicao: TIntegerField
       FieldName = 'parc_condicao'
       Origin = 'parcelas.parc_condicao'
@@ -1070,7 +1073,7 @@ object DataModule1: TDataModule1
   end
   object ds_parcelas: TMyDataSource
     DataSet = SQL_parcela
-    Left = 480
+    Left = 376
     Top = 272
   end
   object SQL_imagens: TMyQuery
@@ -1104,8 +1107,8 @@ object DataModule1: TDataModule1
     SQL.Strings = (
       'select * from imagens')
     Active = True
-    Left = 560
-    Top = 224
+    Left = 288
+    Top = 336
     object SQL_imagenscod_imagem: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'cod_imagem'
@@ -1123,21 +1126,22 @@ object DataModule1: TDataModule1
   end
   object ds_imagens: TMyDataSource
     DataSet = SQL_imagens
-    Left = 560
-    Top = 280
+    Left = 288
+    Top = 392
   end
   object SQL_transportadora: TMyQuery
     SQLInsert.Strings = (
       'INSERT INTO transportadoras'
       
-        '  (transp_antt, transp_cnpj, transp_endereco, transp_cidade, tra' +
-        'nsp_insc, transp_nome, transp_placa, transp_ufVeiculo, transp_uf' +
-        ', transp_fone)'
+        '  (transp_nome, transp_antt, transp_cnpj, transp_endereco, trans' +
+        'p_cidade, transp_insc, transp_placa, transp_ufVeiculo, transp_uf' +
+        ', transp_fone, transp_numero, transp_bairro, transp_veiculo)'
       'VALUES'
       
-        '  (:transp_antt, :transp_cnpj, :transp_endereco, :transp_cidade,' +
-        ' :transp_insc, :transp_nome, :transp_placa, :transp_ufVeiculo, :' +
-        'transp_uf, :transp_fone)')
+        '  (:transp_nome, :transp_antt, :transp_cnpj, :transp_endereco, :' +
+        'transp_cidade, :transp_insc, :transp_placa, :transp_ufVeiculo, :' +
+        'transp_uf, :transp_fone, :transp_numero, :transp_bairro, :transp' +
+        '_veiculo)')
     SQLDelete.Strings = (
       'DELETE FROM transportadoras'
       'WHERE'
@@ -1146,18 +1150,21 @@ object DataModule1: TDataModule1
       'UPDATE transportadoras'
       'SET'
       
-        '  transp_antt = :transp_antt, transp_cnpj = :transp_cnpj, transp' +
-        '_endereco = :transp_endereco, transp_cidade = :transp_cidade, tr' +
-        'ansp_insc = :transp_insc, transp_nome = :transp_nome, transp_pla' +
+        '  transp_nome = :transp_nome, transp_antt = :transp_antt, transp' +
+        '_cnpj = :transp_cnpj, transp_endereco = :transp_endereco, transp' +
+        '_cidade = :transp_cidade, transp_insc = :transp_insc, transp_pla' +
         'ca = :transp_placa, transp_ufVeiculo = :transp_ufVeiculo, transp' +
-        '_uf = :transp_uf, transp_fone = :transp_fone'
+        '_uf = :transp_uf, transp_fone = :transp_fone, transp_numero = :t' +
+        'ransp_numero, transp_bairro = :transp_bairro, transp_veiculo = :' +
+        'transp_veiculo'
       'WHERE'
       '  transp_id = :Old_transp_id')
     SQLRefresh.Strings = (
       
-        'SELECT transp_antt, transp_cnpj, transp_endereco, transp_cidade,' +
-        ' transp_insc, transp_nome, transp_placa, transp_ufVeiculo, trans' +
-        'p_uf, transp_fone FROM transportadoras'
+        'SELECT transp_nome, transp_antt, transp_cnpj, transp_endereco, t' +
+        'ransp_cidade, transp_insc, transp_placa, transp_ufVeiculo, trans' +
+        'p_uf, transp_fone, transp_numero, transp_bairro, transp_veiculo ' +
+        'FROM transportadoras'
       'WHERE'
       '  transp_id = :transp_id')
     SQLLock.Strings = (
@@ -1171,8 +1178,8 @@ object DataModule1: TDataModule1
     SQL.Strings = (
       'select * from transportadoras')
     Active = True
-    Left = 664
-    Top = 88
+    Left = 120
+    Top = 336
     object SQL_transportadoratransp_id: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'transp_id'
@@ -1226,11 +1233,25 @@ object DataModule1: TDataModule1
       Origin = 'transportadoras.transp_fone'
       Size = 55
     end
+    object SQL_transportadoratransp_numero: TStringField
+      FieldName = 'transp_numero'
+      Origin = 'transportadoras.transp_numero'
+      Size = 5
+    end
+    object SQL_transportadoratransp_bairro: TStringField
+      FieldName = 'transp_bairro'
+      Origin = 'transportadoras.transp_bairro'
+      Size = 30
+    end
+    object SQL_transportadoratransp_veiculo: TIntegerField
+      FieldName = 'transp_veiculo'
+      Origin = 'transportadoras.transp_veiculo'
+    end
   end
   object ds_transportadoras: TMyDataSource
     DataSet = SQL_transportadora
-    Left = 656
-    Top = 152
+    Left = 120
+    Top = 392
   end
   object SQL_itenscompra: TMyQuery
     SQLInsert.Strings = (
@@ -1290,8 +1311,8 @@ object DataModule1: TDataModule1
     SQL.Strings = (
       'select * from itenscompra')
     Active = True
-    Left = 664
-    Top = 224
+    Left = 464
+    Top = 216
     object SQL_itenscompraitemC_codProduto: TIntegerField
       FieldName = 'itemC_codProduto'
       Origin = 'itenscompra.itemC_codProduto'
@@ -1363,8 +1384,8 @@ object DataModule1: TDataModule1
   end
   object ds_itenscompra: TMyDataSource
     DataSet = SQL_itenscompra
-    Left = 664
-    Top = 280
+    Left = 464
+    Top = 272
   end
   object SQL_compras: TMyQuery
     SQLInsert.Strings = (
@@ -1379,7 +1400,7 @@ object DataModule1: TDataModule1
         'lIPI, compra_valorTotal, compra_qtde, compra_placaVeiculo, compr' +
         'a_ufVeiculo, compra_especie, compra_marca, compra_numeracao, com' +
         'pra_pesoBruto, compra_pesoLiquido, compra_fretePorconta, compra_' +
-        'codCompra)'
+        'codCompra, compra_veiculo)'
       'VALUES'
       
         '  (:compra_numeroNota, :compra_codFornecedor, :compra_serieNota,' +
@@ -1391,7 +1412,7 @@ object DataModule1: TDataModule1
         ' :compra_valorTotalIPI, :compra_valorTotal, :compra_qtde, :compr' +
         'a_placaVeiculo, :compra_ufVeiculo, :compra_especie, :compra_marc' +
         'a, :compra_numeracao, :compra_pesoBruto, :compra_pesoLiquido, :c' +
-        'ompra_fretePorconta, :compra_codCompra)')
+        'ompra_fretePorconta, :compra_codCompra, :compra_veiculo)')
     SQLDelete.Strings = (
       'DELETE FROM compras'
       'WHERE'
@@ -1402,24 +1423,26 @@ object DataModule1: TDataModule1
       'UPDATE compras'
       'SET'
       
-        '  compra_serieNota = :compra_serieNota, compra_codCompra = :comp' +
-        'ra_codCompra, compra_tipoNota = :compra_tipoNota, compra_codTran' +
-        'sportadora = :compra_codTransportadora, compra_condPgto = :compr' +
-        'a_condPgto, compra_dataEmissao = :compra_dataEmissao, compra_dat' +
-        'aChegada = :compra_dataChegada, compra_baseCalculoICMS = :compra' +
-        '_baseCalculoICMS, compra_valorICMS = :compra_valorICMS, compra_b' +
-        'aseCalculoICMSsubst = :compra_baseCalculoICMSsubst, compra_valor' +
-        'ICMSsubst = :compra_valorICMSsubst, compra_valorTotalProdutos = ' +
-        ':compra_valorTotalProdutos, compra_valorFrete = :compra_valorFre' +
-        'te, compra_valorSeguro = :compra_valorSeguro, compra_desconto = ' +
-        ':compra_desconto, compra_outrasDespAcessorias = :compra_outrasDe' +
-        'spAcessorias, compra_valorTotalIPI = :compra_valorTotalIPI, comp' +
-        'ra_valorTotal = :compra_valorTotal, compra_qtde = :compra_qtde, ' +
-        'compra_placaVeiculo = :compra_placaVeiculo, compra_ufVeiculo = :' +
-        'compra_ufVeiculo, compra_especie = :compra_especie, compra_marca' +
-        ' = :compra_marca, compra_numeracao = :compra_numeracao, compra_p' +
-        'esoBruto = :compra_pesoBruto, compra_pesoLiquido = :compra_pesoL' +
-        'iquido, compra_fretePorconta = :compra_fretePorconta'
+        '  compra_numeroNota = :compra_numeroNota, compra_codFornecedor =' +
+        ' :compra_codFornecedor, compra_serieNota = :compra_serieNota, co' +
+        'mpra_codCompra = :compra_codCompra, compra_tipoNota = :compra_ti' +
+        'poNota, compra_codTransportadora = :compra_codTransportadora, co' +
+        'mpra_condPgto = :compra_condPgto, compra_dataEmissao = :compra_d' +
+        'ataEmissao, compra_dataChegada = :compra_dataChegada, compra_bas' +
+        'eCalculoICMS = :compra_baseCalculoICMS, compra_valorICMS = :comp' +
+        'ra_valorICMS, compra_baseCalculoICMSsubst = :compra_baseCalculoI' +
+        'CMSsubst, compra_valorICMSsubst = :compra_valorICMSsubst, compra' +
+        '_valorTotalProdutos = :compra_valorTotalProdutos, compra_valorFr' +
+        'ete = :compra_valorFrete, compra_valorSeguro = :compra_valorSegu' +
+        'ro, compra_desconto = :compra_desconto, compra_outrasDespAcessor' +
+        'ias = :compra_outrasDespAcessorias, compra_valorTotalIPI = :comp' +
+        'ra_valorTotalIPI, compra_valorTotal = :compra_valorTotal, compra' +
+        '_qtde = :compra_qtde, compra_placaVeiculo = :compra_placaVeiculo' +
+        ', compra_ufVeiculo = :compra_ufVeiculo, compra_especie = :compra' +
+        '_especie, compra_marca = :compra_marca, compra_numeracao = :comp' +
+        'ra_numeracao, compra_pesoBruto = :compra_pesoBruto, compra_pesoL' +
+        'iquido = :compra_pesoLiquido, compra_veiculo = :compra_veiculo, ' +
+        'compra_fretePorconta = :compra_fretePorconta'
       'WHERE'
       
         '  compra_numeroNota = :Old_compra_numeroNota AND compra_codForne' +
@@ -1452,8 +1475,8 @@ object DataModule1: TDataModule1
     SQL.Strings = (
       'select * from compras')
     Active = True
-    Left = 768
-    Top = 88
+    Left = 32
+    Top = 464
     object SQL_comprascompra_numeroNota: TIntegerField
       FieldName = 'compra_numeroNota'
       Origin = 'compras.compra_numeroNota'
@@ -1577,10 +1600,773 @@ object DataModule1: TDataModule1
       FieldName = 'compra_codCompra'
       Origin = 'compras.compra_codCompra'
     end
+    object SQL_comprascompra_veiculo: TIntegerField
+      FieldName = 'compra_veiculo'
+      Origin = 'compras.compra_veiculo'
+    end
   end
   object ds_compras: TMyDataSource
     DataSet = SQL_compras
-    Left = 768
-    Top = 160
+    Left = 32
+    Top = 520
+  end
+  object SQL_veiculo: TMyQuery
+    SQLInsert.Strings = (
+      'INSERT INTO veiculos'
+      '  (veiculo_placa, veiculo_uf, veiculo_descricao)'
+      'VALUES'
+      '  (:veiculo_placa, :veiculo_uf, :veiculo_descricao)')
+    SQLDelete.Strings = (
+      'DELETE FROM veiculos'
+      'WHERE'
+      '  veiculo_id = :Old_veiculo_id')
+    SQLUpdate.Strings = (
+      'UPDATE veiculos'
+      'SET'
+      
+        '  veiculo_placa = :veiculo_placa, veiculo_uf = :veiculo_uf, veic' +
+        'ulo_descricao = :veiculo_descricao'
+      'WHERE'
+      '  veiculo_id = :Old_veiculo_id')
+    SQLRefresh.Strings = (
+      
+        'SELECT veiculo_placa, veiculo_uf, veiculo_descricao FROM veiculo' +
+        's'
+      'WHERE'
+      '  veiculo_id = :veiculo_id')
+    SQLLock.Strings = (
+      'SELECT * FROM veiculos'
+      'WHERE'
+      '  veiculo_id = :Old_veiculo_id'
+      'FOR UPDATE')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM veiculos')
+    Connection = con_banco
+    SQL.Strings = (
+      'select * from veiculos')
+    Active = True
+    Left = 208
+    Top = 336
+    object SQL_veiculoveiculo_id: TIntegerField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'veiculo_id'
+      Origin = 'veiculos.veiculo_id'
+    end
+    object SQL_veiculoveiculo_placa: TStringField
+      FieldName = 'veiculo_placa'
+      Origin = 'veiculos.veiculo_placa'
+    end
+    object SQL_veiculoveiculo_uf: TIntegerField
+      FieldName = 'veiculo_uf'
+      Origin = 'veiculos.veiculo_uf'
+    end
+    object SQL_veiculoveiculo_descricao: TStringField
+      FieldName = 'veiculo_descricao'
+      Origin = 'veiculos.veiculo_descricao'
+      Size = 50
+    end
+  end
+  object ds_veiculos: TMyDataSource
+    DataSet = SQL_veiculo
+    Left = 208
+    Top = 392
+  end
+  object SQL_itensvenda: TMyQuery
+    SQLInsert.Strings = (
+      'INSERT INTO itensvenda'
+      
+        '  (itemV_codProduto, itemV_codVenda, itemV_numero, itemV_nome, i' +
+        'temV_valorUnitario, itemV_ncm, itemV_cst, itemV_unidade, itemV_c' +
+        'fop, itemV_qtde, itemV_vTotal, itemV_baseICMS, itemV_valorICMS, ' +
+        'itemV_valorIPI, itemV_aliqICMS, itemV_aliqIPI)'
+      'VALUES'
+      
+        '  (:itemV_codProduto, :itemV_codVenda, :itemV_numero, :itemV_nom' +
+        'e, :itemV_valorUnitario, :itemV_ncm, :itemV_cst, :itemV_unidade,' +
+        ' :itemV_cfop, :itemV_qtde, :itemV_vTotal, :itemV_baseICMS, :item' +
+        'V_valorICMS, :itemV_valorIPI, :itemV_aliqICMS, :itemV_aliqIPI)')
+    SQLDelete.Strings = (
+      'DELETE FROM itensvenda'
+      'WHERE'
+      
+        '  itemV_codVenda = :Old_itemV_codVenda AND itemV_numero = :Old_i' +
+        'temV_numero')
+    SQLUpdate.Strings = (
+      'UPDATE itensvenda'
+      'SET'
+      
+        '  itemV_numero = :itemV_numero, itemV_nome = :itemV_nome, itemV_' +
+        'valorUnitario = :itemV_valorUnitario, itemV_ncm = :itemV_ncm, it' +
+        'emV_cst = :itemV_cst, itemV_unidade = :itemV_unidade, itemV_cfop' +
+        ' = :itemV_cfop, itemV_qtde = :itemV_qtde, itemV_vTotal = :itemV_' +
+        'vTotal, itemV_baseICMS = :itemV_baseICMS, itemV_valorICMS = :ite' +
+        'mV_valorICMS, itemV_valorIPI = :itemV_valorIPI, itemV_aliqICMS =' +
+        ' :itemV_aliqICMS, itemV_aliqIPI = :itemV_aliqIPI'
+      'WHERE'
+      
+        '  itemV_codVenda = :Old_itemV_codVenda AND itemV_numero = :Old_i' +
+        'temV_numero')
+    SQLRefresh.Strings = (
+      
+        'SELECT itemV_codProduto, itemV_codVenda, itemV_numero, itemV_nom' +
+        'e, itemV_valorUnitario, itemV_ncm, itemV_cst, itemV_unidade, ite' +
+        'mV_cfop, itemV_qtde, itemV_vTotal, itemV_baseICMS, itemV_valorIC' +
+        'MS, itemV_valorIPI, itemV_aliqICMS, itemV_aliqIPI FROM itensvend' +
+        'a'
+      'WHERE'
+      
+        '  itemV_codVenda = :itemV_codVenda AND itemV_numero = :itemV_num' +
+        'ero')
+    SQLLock.Strings = (
+      'SELECT * FROM itensvenda'
+      'WHERE'
+      
+        '  itemV_codVenda = :Old_itemV_codVenda AND itemV_numero = :Old_i' +
+        'temV_numero'
+      'FOR UPDATE')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM itensvenda')
+    Connection = con_banco
+    SQL.Strings = (
+      'select * from itensvenda')
+    Active = True
+    Left = 120
+    Top = 464
+    object SQL_itensvendaitemV_codProduto: TIntegerField
+      FieldName = 'itemV_codProduto'
+      Origin = 'itensvenda.itemV_codProduto'
+    end
+    object SQL_itensvendaitemV_codVenda: TIntegerField
+      FieldName = 'itemV_codVenda'
+      Origin = 'itensvenda.itemV_codVenda'
+    end
+    object SQL_itensvendaitemV_numero: TIntegerField
+      FieldName = 'itemV_numero'
+      Origin = 'itensvenda.itemV_numero'
+    end
+    object SQL_itensvendaitemV_nome: TStringField
+      FieldName = 'itemV_nome'
+      Origin = 'itensvenda.itemV_nome'
+      Size = 70
+    end
+    object SQL_itensvendaitemV_valorUnitario: TFloatField
+      FieldName = 'itemV_valorUnitario'
+      Origin = 'itensvenda.itemV_valorUnitario'
+    end
+    object SQL_itensvendaitemV_ncm: TStringField
+      FieldName = 'itemV_ncm'
+      Origin = 'itensvenda.itemV_ncm'
+      Size = 30
+    end
+    object SQL_itensvendaitemV_cst: TStringField
+      FieldName = 'itemV_cst'
+      Origin = 'itensvenda.itemV_cst'
+      Size = 10
+    end
+    object SQL_itensvendaitemV_unidade: TIntegerField
+      FieldName = 'itemV_unidade'
+      Origin = 'itensvenda.itemV_unidade'
+    end
+    object SQL_itensvendaitemV_cfop: TStringField
+      FieldName = 'itemV_cfop'
+      Origin = 'itensvenda.itemV_cfop'
+      Size = 10
+    end
+    object SQL_itensvendaitemV_qtde: TIntegerField
+      FieldName = 'itemV_qtde'
+      Origin = 'itensvenda.itemV_qtde'
+    end
+    object SQL_itensvendaitemV_vTotal: TFloatField
+      FieldName = 'itemV_vTotal'
+      Origin = 'itensvenda.itemV_vTotal'
+    end
+    object SQL_itensvendaitemV_baseICMS: TFloatField
+      FieldName = 'itemV_baseICMS'
+      Origin = 'itensvenda.itemV_baseICMS'
+    end
+    object SQL_itensvendaitemV_valorICMS: TFloatField
+      FieldName = 'itemV_valorICMS'
+      Origin = 'itensvenda.itemV_valorICMS'
+    end
+    object SQL_itensvendaitemV_valorIPI: TFloatField
+      FieldName = 'itemV_valorIPI'
+      Origin = 'itensvenda.itemV_valorIPI'
+    end
+    object SQL_itensvendaitemV_aliqICMS: TFloatField
+      FieldName = 'itemV_aliqICMS'
+      Origin = 'itensvenda.itemV_aliqICMS'
+    end
+    object SQL_itensvendaitemV_aliqIPI: TFloatField
+      FieldName = 'itemV_aliqIPI'
+      Origin = 'itensvenda.itemV_aliqIPI'
+    end
+  end
+  object ds_itensvenda: TMyDataSource
+    DataSet = SQL_itensvenda
+    Left = 120
+    Top = 520
+  end
+  object SQL_vendas: TMyQuery
+    SQLInsert.Strings = (
+      'INSERT INTO vendas'
+      
+        '  (venda_codCliente, venda_serieNota, venda_tipoNota, venda_cond' +
+        'Pgto, venda_codTransportadora, venda_dataEmissao, venda_dataCheg' +
+        'ada, venda_baseCalculoICMS, venda_valorICMS, venda_baseCalculoIC' +
+        'MSsubst, venda_valorICMSsubst, venda_valorTotalProdutos, venda_v' +
+        'alorFrete, venda_valorSeguro, venda_desconto, venda_outrasDespAc' +
+        'essorias, venda_valorTotalIPI, venda_valorTotal, venda_qtde, ven' +
+        'da_placaVeiculo, venda_ufVeiculo, venda_especie, venda_marca, ve' +
+        'nda_numeracao, venda_pesoBruto, venda_pesoLiquido, venda_fretePo' +
+        'rconta, venda_veiculo, venda_categoria)'
+      'VALUES'
+      
+        '  (:venda_codCliente, :venda_serieNota, :venda_tipoNota, :venda_' +
+        'condPgto, :venda_codTransportadora, :venda_dataEmissao, :venda_d' +
+        'ataChegada, :venda_baseCalculoICMS, :venda_valorICMS, :venda_bas' +
+        'eCalculoICMSsubst, :venda_valorICMSsubst, :venda_valorTotalProdu' +
+        'tos, :venda_valorFrete, :venda_valorSeguro, :venda_desconto, :ve' +
+        'nda_outrasDespAcessorias, :venda_valorTotalIPI, :venda_valorTota' +
+        'l, :venda_qtde, :venda_placaVeiculo, :venda_ufVeiculo, :venda_es' +
+        'pecie, :venda_marca, :venda_numeracao, :venda_pesoBruto, :venda_' +
+        'pesoLiquido, :venda_fretePorconta, :venda_veiculo, :venda_catego' +
+        'ria)')
+    SQLDelete.Strings = (
+      'DELETE FROM vendas'
+      'WHERE'
+      '  venda_numeroNota = :Old_venda_numeroNota')
+    SQLUpdate.Strings = (
+      'UPDATE vendas'
+      'SET'
+      
+        '  venda_codCliente = :venda_codCliente, venda_serieNota = :venda' +
+        '_serieNota, venda_tipoNota = :venda_tipoNota, venda_condPgto = :' +
+        'venda_condPgto, venda_codTransportadora = :venda_codTransportado' +
+        'ra, venda_dataEmissao = :venda_dataEmissao, venda_dataChegada = ' +
+        ':venda_dataChegada, venda_baseCalculoICMS = :venda_baseCalculoIC' +
+        'MS, venda_valorICMS = :venda_valorICMS, venda_baseCalculoICMSsub' +
+        'st = :venda_baseCalculoICMSsubst, venda_valorICMSsubst = :venda_' +
+        'valorICMSsubst, venda_valorTotalProdutos = :venda_valorTotalProd' +
+        'utos, venda_valorFrete = :venda_valorFrete, venda_valorSeguro = ' +
+        ':venda_valorSeguro, venda_desconto = :venda_desconto, venda_outr' +
+        'asDespAcessorias = :venda_outrasDespAcessorias, venda_valorTotal' +
+        'IPI = :venda_valorTotalIPI, venda_valorTotal = :venda_valorTotal' +
+        ', venda_qtde = :venda_qtde, venda_placaVeiculo = :venda_placaVei' +
+        'culo, venda_ufVeiculo = :venda_ufVeiculo, venda_especie = :venda' +
+        '_especie, venda_marca = :venda_marca, venda_numeracao = :venda_n' +
+        'umeracao, venda_pesoBruto = :venda_pesoBruto, venda_pesoLiquido ' +
+        '= :venda_pesoLiquido, venda_fretePorconta = :venda_fretePorconta' +
+        ', venda_veiculo = :venda_veiculo, venda_categoria = :venda_categ' +
+        'oria'
+      'WHERE'
+      '  venda_numeroNota = :Old_venda_numeroNota')
+    SQLRefresh.Strings = (
+      
+        'SELECT venda_codCliente, venda_serieNota, venda_tipoNota, venda_' +
+        'condPgto, venda_codTransportadora, venda_dataEmissao, venda_data' +
+        'Chegada, venda_baseCalculoICMS, venda_valorICMS, venda_baseCalcu' +
+        'loICMSsubst, venda_valorICMSsubst, venda_valorTotalProdutos, ven' +
+        'da_valorFrete, venda_valorSeguro, venda_desconto, venda_outrasDe' +
+        'spAcessorias, venda_valorTotalIPI, venda_valorTotal, venda_qtde,' +
+        ' venda_placaVeiculo, venda_ufVeiculo, venda_especie, venda_marca' +
+        ', venda_numeracao, venda_pesoBruto, venda_pesoLiquido, venda_fre' +
+        'tePorconta, venda_veiculo, venda_categoria FROM vendas'
+      'WHERE'
+      '  venda_numeroNota = :venda_numeroNota')
+    SQLLock.Strings = (
+      'SELECT * FROM vendas'
+      'WHERE'
+      '  venda_numeroNota = :Old_venda_numeroNota'
+      'FOR UPDATE')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM vendas')
+    Connection = con_banco
+    SQL.Strings = (
+      'select * from vendas')
+    Active = True
+    Left = 208
+    Top = 464
+    object SQL_vendasvenda_numeroNota: TIntegerField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'venda_numeroNota'
+      Origin = 'vendas.venda_numeroNota'
+    end
+    object SQL_vendasvenda_codCliente: TIntegerField
+      FieldName = 'venda_codCliente'
+      Origin = 'vendas.venda_codCliente'
+    end
+    object SQL_vendasvenda_serieNota: TIntegerField
+      FieldName = 'venda_serieNota'
+      Origin = 'vendas.venda_serieNota'
+    end
+    object SQL_vendasvenda_tipoNota: TIntegerField
+      FieldName = 'venda_tipoNota'
+      Origin = 'vendas.venda_tipoNota'
+    end
+    object SQL_vendasvenda_condPgto: TIntegerField
+      FieldName = 'venda_condPgto'
+      Origin = 'vendas.venda_condPgto'
+    end
+    object SQL_vendasvenda_codTransportadora: TIntegerField
+      FieldName = 'venda_codTransportadora'
+      Origin = 'vendas.venda_codTransportadora'
+    end
+    object SQL_vendasvenda_dataEmissao: TDateTimeField
+      FieldName = 'venda_dataEmissao'
+      Origin = 'vendas.venda_dataEmissao'
+    end
+    object SQL_vendasvenda_dataChegada: TDateTimeField
+      FieldName = 'venda_dataChegada'
+      Origin = 'vendas.venda_dataChegada'
+    end
+    object SQL_vendasvenda_baseCalculoICMS: TFloatField
+      FieldName = 'venda_baseCalculoICMS'
+      Origin = 'vendas.venda_baseCalculoICMS'
+    end
+    object SQL_vendasvenda_valorICMS: TFloatField
+      FieldName = 'venda_valorICMS'
+      Origin = 'vendas.venda_valorICMS'
+    end
+    object SQL_vendasvenda_baseCalculoICMSsubst: TFloatField
+      FieldName = 'venda_baseCalculoICMSsubst'
+      Origin = 'vendas.venda_baseCalculoICMSsubst'
+    end
+    object SQL_vendasvenda_valorICMSsubst: TFloatField
+      FieldName = 'venda_valorICMSsubst'
+      Origin = 'vendas.venda_valorICMSsubst'
+    end
+    object SQL_vendasvenda_valorTotalProdutos: TFloatField
+      FieldName = 'venda_valorTotalProdutos'
+      Origin = 'vendas.venda_valorTotalProdutos'
+    end
+    object SQL_vendasvenda_valorFrete: TFloatField
+      FieldName = 'venda_valorFrete'
+      Origin = 'vendas.venda_valorFrete'
+    end
+    object SQL_vendasvenda_valorSeguro: TFloatField
+      FieldName = 'venda_valorSeguro'
+      Origin = 'vendas.venda_valorSeguro'
+    end
+    object SQL_vendasvenda_desconto: TFloatField
+      FieldName = 'venda_desconto'
+      Origin = 'vendas.venda_desconto'
+    end
+    object SQL_vendasvenda_outrasDespAcessorias: TFloatField
+      FieldName = 'venda_outrasDespAcessorias'
+      Origin = 'vendas.venda_outrasDespAcessorias'
+    end
+    object SQL_vendasvenda_valorTotalIPI: TFloatField
+      FieldName = 'venda_valorTotalIPI'
+      Origin = 'vendas.venda_valorTotalIPI'
+    end
+    object SQL_vendasvenda_valorTotal: TFloatField
+      FieldName = 'venda_valorTotal'
+      Origin = 'vendas.venda_valorTotal'
+    end
+    object SQL_vendasvenda_qtde: TIntegerField
+      FieldName = 'venda_qtde'
+      Origin = 'vendas.venda_qtde'
+    end
+    object SQL_vendasvenda_placaVeiculo: TStringField
+      FieldName = 'venda_placaVeiculo'
+      Origin = 'vendas.venda_placaVeiculo'
+      Size = 25
+    end
+    object SQL_vendasvenda_ufVeiculo: TStringField
+      FieldName = 'venda_ufVeiculo'
+      Origin = 'vendas.venda_ufVeiculo'
+      Size = 5
+    end
+    object SQL_vendasvenda_especie: TStringField
+      FieldName = 'venda_especie'
+      Origin = 'vendas.venda_especie'
+      Size = 100
+    end
+    object SQL_vendasvenda_marca: TStringField
+      FieldName = 'venda_marca'
+      Origin = 'vendas.venda_marca'
+      Size = 25
+    end
+    object SQL_vendasvenda_numeracao: TStringField
+      FieldName = 'venda_numeracao'
+      Origin = 'vendas.venda_numeracao'
+      Size = 25
+    end
+    object SQL_vendasvenda_pesoBruto: TFloatField
+      FieldName = 'venda_pesoBruto'
+      Origin = 'vendas.venda_pesoBruto'
+    end
+    object SQL_vendasvenda_pesoLiquido: TFloatField
+      FieldName = 'venda_pesoLiquido'
+      Origin = 'vendas.venda_pesoLiquido'
+    end
+    object SQL_vendasvenda_fretePorconta: TStringField
+      FieldName = 'venda_fretePorconta'
+      Origin = 'vendas.venda_fretePorconta'
+      Size = 25
+    end
+    object SQL_vendasvenda_veiculo: TIntegerField
+      FieldName = 'venda_veiculo'
+      Origin = 'vendas.venda_veiculo'
+    end
+    object SQL_vendasvenda_categoria: TStringField
+      FieldName = 'venda_categoria'
+      Origin = 'vendas.venda_categoria'
+      FixedChar = True
+    end
+  end
+  object ds_vendas: TMyDataSource
+    DataSet = SQL_vendas
+    Left = 208
+    Top = 520
+  end
+  object sql_contaPagar: TMyQuery
+    SQLInsert.Strings = (
+      'INSERT INTO contaspagar'
+      
+        '  (contaP_dataCadastro, contaP_codFornecedor, contaP_documento, ' +
+        'contaP_vencimento, contaP_valor, contaP_numeroParcela, contaP_ju' +
+        'ros, contaP_observacao, contaP_status, contaP_dataPagamento, con' +
+        'taP_formaPagamento, contaP_codCompra)'
+      'VALUES'
+      
+        '  (:contaP_dataCadastro, :contaP_codFornecedor, :contaP_document' +
+        'o, :contaP_vencimento, :contaP_valor, :contaP_numeroParcela, :co' +
+        'ntaP_juros, :contaP_observacao, :contaP_status, :contaP_dataPaga' +
+        'mento, :contaP_formaPagamento, :contaP_codCompra)')
+    SQLDelete.Strings = (
+      'DELETE FROM contaspagar'
+      'WHERE'
+      '  contaP_id = :Old_contaP_id')
+    SQLUpdate.Strings = (
+      'UPDATE contaspagar'
+      'SET'
+      
+        '  contaP_dataCadastro = :contaP_dataCadastro, contaP_codForneced' +
+        'or = :contaP_codFornecedor, contaP_documento = :contaP_documento' +
+        ', contaP_vencimento = :contaP_vencimento, contaP_valor = :contaP' +
+        '_valor, contaP_numeroParcela = :contaP_numeroParcela, contaP_jur' +
+        'os = :contaP_juros, contaP_observacao = :contaP_observacao, cont' +
+        'aP_status = :contaP_status, contaP_dataPagamento = :contaP_dataP' +
+        'agamento, contaP_formaPagamento = :contaP_formaPagamento, contaP' +
+        '_codCompra = :contaP_codCompra'
+      'WHERE'
+      '  contaP_id = :Old_contaP_id')
+    SQLRefresh.Strings = (
+      
+        'SELECT contaP_dataCadastro, contaP_codFornecedor, contaP_documen' +
+        'to, contaP_vencimento, contaP_valor, contaP_numeroParcela, conta' +
+        'P_juros, contaP_observacao, contaP_status, contaP_dataPagamento,' +
+        ' contaP_formaPagamento, contaP_codCompra FROM contaspagar'
+      'WHERE'
+      '  contaP_id = :contaP_id')
+    SQLLock.Strings = (
+      'SELECT * FROM contaspagar'
+      'WHERE'
+      '  contaP_id = :Old_contaP_id'
+      'FOR UPDATE')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM contaspagar')
+    Connection = con_banco
+    SQL.Strings = (
+      'select * from contaspagar')
+    Active = True
+    Left = 288
+    Top = 464
+    object sql_contaPagarcontaP_id: TIntegerField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'contaP_id'
+      Origin = 'contaspagar.contaP_id'
+    end
+    object sql_contaPagarcontaP_dataCadastro: TDateTimeField
+      FieldName = 'contaP_dataCadastro'
+      Origin = 'contaspagar.contaP_dataCadastro'
+    end
+    object sql_contaPagarcontaP_codFornecedor: TIntegerField
+      FieldName = 'contaP_codFornecedor'
+      Origin = 'contaspagar.contaP_codFornecedor'
+    end
+    object sql_contaPagarcontaP_documento: TStringField
+      FieldName = 'contaP_documento'
+      Origin = 'contaspagar.contaP_documento'
+      Size = 100
+    end
+    object sql_contaPagarcontaP_vencimento: TDateTimeField
+      FieldName = 'contaP_vencimento'
+      Origin = 'contaspagar.contaP_vencimento'
+    end
+    object sql_contaPagarcontaP_valor: TFloatField
+      FieldName = 'contaP_valor'
+      Origin = 'contaspagar.contaP_valor'
+    end
+    object sql_contaPagarcontaP_numeroParcela: TIntegerField
+      FieldName = 'contaP_numeroParcela'
+      Origin = 'contaspagar.contaP_numeroParcela'
+    end
+    object sql_contaPagarcontaP_juros: TFloatField
+      FieldName = 'contaP_juros'
+      Origin = 'contaspagar.contaP_juros'
+    end
+    object sql_contaPagarcontaP_observacao: TStringField
+      FieldName = 'contaP_observacao'
+      Origin = 'contaspagar.contaP_observacao'
+      Size = 255
+    end
+    object sql_contaPagarcontaP_status: TIntegerField
+      FieldName = 'contaP_status'
+      Origin = 'contaspagar.contaP_status'
+    end
+    object sql_contaPagarcontaP_dataPagamento: TDateTimeField
+      FieldName = 'contaP_dataPagamento'
+      Origin = 'contaspagar.contaP_dataPagamento'
+    end
+    object sql_contaPagarcontaP_formaPagamento: TIntegerField
+      FieldName = 'contaP_formaPagamento'
+      Origin = 'contaspagar.contaP_formaPagamento'
+    end
+    object sql_contaPagarcontaP_codCompra: TIntegerField
+      FieldName = 'contaP_codCompra'
+      Origin = 'contaspagar.contaP_codCompra'
+    end
+  end
+  object ds_contapagar: TMyDataSource
+    DataSet = sql_contaPagar
+    Left = 288
+    Top = 520
+  end
+  object SQL_contaReceber: TMyQuery
+    SQLInsert.Strings = (
+      'INSERT INTO contasreceber'
+      
+        '  (contaR_dataCadastro, contaR_codCliente, contaR_documento, con' +
+        'taR_vencimento, contaR_valor, contaR_numeroParcela, contaR_juros' +
+        ', contaR_observacao, contaR_status, contaR_dataPagamento, contaR' +
+        '_formaPagamento, contaR_codVenda)'
+      'VALUES'
+      
+        '  (:contaR_dataCadastro, :contaR_codCliente, :contaR_documento, ' +
+        ':contaR_vencimento, :contaR_valor, :contaR_numeroParcela, :conta' +
+        'R_juros, :contaR_observacao, :contaR_status, :contaR_dataPagamen' +
+        'to, :contaR_formaPagamento, :contaR_codVenda)')
+    SQLDelete.Strings = (
+      'DELETE FROM contasreceber'
+      'WHERE'
+      '  contaR_id = :Old_contaR_id')
+    SQLUpdate.Strings = (
+      'UPDATE contasreceber'
+      'SET'
+      
+        '  contaR_dataCadastro = :contaR_dataCadastro, contaR_codCliente ' +
+        '= :contaR_codCliente, contaR_documento = :contaR_documento, cont' +
+        'aR_vencimento = :contaR_vencimento, contaR_valor = :contaR_valor' +
+        ', contaR_numeroParcela = :contaR_numeroParcela, contaR_juros = :' +
+        'contaR_juros, contaR_observacao = :contaR_observacao, contaR_sta' +
+        'tus = :contaR_status, contaR_dataPagamento = :contaR_dataPagamen' +
+        'to, contaR_formaPagamento = :contaR_formaPagamento, contaR_codVe' +
+        'nda = :contaR_codVenda'
+      'WHERE'
+      '  contaR_id = :Old_contaR_id')
+    SQLRefresh.Strings = (
+      
+        'SELECT contaR_dataCadastro, contaR_codCliente, contaR_documento,' +
+        ' contaR_vencimento, contaR_valor, contaR_numeroParcela, contaR_j' +
+        'uros, contaR_observacao, contaR_status, contaR_dataPagamento, co' +
+        'ntaR_formaPagamento, contaR_codVenda FROM contasreceber'
+      'WHERE'
+      '  contaR_id = :contaR_id')
+    SQLLock.Strings = (
+      'SELECT * FROM contasreceber'
+      'WHERE'
+      '  contaR_id = :Old_contaR_id'
+      'FOR UPDATE')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM contasreceber')
+    Connection = con_banco
+    SQL.Strings = (
+      'select * from contasreceber')
+    Active = True
+    Left = 384
+    Top = 464
+    object SQL_contaRecebercontaR_id: TIntegerField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'contaR_id'
+      Origin = 'contasreceber.contaR_id'
+    end
+    object SQL_contaRecebercontaR_dataCadastro: TDateTimeField
+      FieldName = 'contaR_dataCadastro'
+      Origin = 'contasreceber.contaR_dataCadastro'
+    end
+    object SQL_contaRecebercontaR_codCliente: TIntegerField
+      FieldName = 'contaR_codCliente'
+      Origin = 'contasreceber.contaR_codCliente'
+    end
+    object SQL_contaRecebercontaR_documento: TStringField
+      FieldName = 'contaR_documento'
+      Origin = 'contasreceber.contaR_documento'
+      Size = 100
+    end
+    object SQL_contaRecebercontaR_vencimento: TDateTimeField
+      FieldName = 'contaR_vencimento'
+      Origin = 'contasreceber.contaR_vencimento'
+    end
+    object SQL_contaRecebercontaR_valor: TFloatField
+      FieldName = 'contaR_valor'
+      Origin = 'contasreceber.contaR_valor'
+    end
+    object SQL_contaRecebercontaR_numeroParcela: TIntegerField
+      FieldName = 'contaR_numeroParcela'
+      Origin = 'contasreceber.contaR_numeroParcela'
+    end
+    object SQL_contaRecebercontaR_juros: TFloatField
+      FieldName = 'contaR_juros'
+      Origin = 'contasreceber.contaR_juros'
+    end
+    object SQL_contaRecebercontaR_observacao: TStringField
+      FieldName = 'contaR_observacao'
+      Origin = 'contasreceber.contaR_observacao'
+      Size = 255
+    end
+    object SQL_contaRecebercontaR_status: TIntegerField
+      FieldName = 'contaR_status'
+      Origin = 'contasreceber.contaR_status'
+    end
+    object SQL_contaRecebercontaR_dataPagamento: TDateTimeField
+      FieldName = 'contaR_dataPagamento'
+      Origin = 'contasreceber.contaR_dataPagamento'
+    end
+    object SQL_contaRecebercontaR_formaPagamento: TIntegerField
+      FieldName = 'contaR_formaPagamento'
+      Origin = 'contasreceber.contaR_formaPagamento'
+    end
+    object SQL_contaRecebercontaR_codVenda: TIntegerField
+      FieldName = 'contaR_codVenda'
+      Origin = 'contasreceber.contaR_codVenda'
+    end
+  end
+  object ds_contasReceber: TMyDataSource
+    DataSet = SQL_contaReceber
+    Left = 384
+    Top = 520
+  end
+  object SQL_caixa: TMyQuery
+    SQLInsert.Strings = (
+      'INSERT INTO caixa'
+      
+        '  (caixa_data, caixa_valorInicial, caixa_valorFinal, caixa_saldo' +
+        ')'
+      'VALUES'
+      
+        '  (:caixa_data, :caixa_valorInicial, :caixa_valorFinal, :caixa_s' +
+        'aldo)')
+    SQLDelete.Strings = (
+      'DELETE FROM caixa'
+      'WHERE'
+      '  caixa_data = :Old_caixa_data')
+    SQLUpdate.Strings = (
+      'UPDATE caixa'
+      'SET'
+      
+        '  caixa_valorInicial = :caixa_valorInicial, caixa_valorFinal = :' +
+        'caixa_valorFinal, caixa_saldo = :caixa_saldo'
+      'WHERE'
+      '  caixa_data = :Old_caixa_data')
+    SQLRefresh.Strings = (
+      
+        'SELECT caixa_valorInicial, caixa_valorFinal, caixa_saldo FROM ca' +
+        'ixa'
+      'WHERE'
+      '  caixa_data = :caixa_data')
+    SQLLock.Strings = (
+      'SELECT * FROM caixa'
+      'WHERE'
+      '  caixa_data = :Old_caixa_data'
+      'FOR UPDATE')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM caixa')
+    Connection = con_banco
+    SQL.Strings = (
+      'select * from caixa')
+    Active = True
+    Left = 464
+    Top = 336
+    object SQL_caixacaixa_data: TDateField
+      FieldName = 'caixa_data'
+      Origin = 'caixa.caixa_data'
+    end
+    object SQL_caixacaixa_valorInicial: TFloatField
+      FieldName = 'caixa_valorInicial'
+      Origin = 'caixa.caixa_valorInicial'
+    end
+    object SQL_caixacaixa_valorFinal: TFloatField
+      FieldName = 'caixa_valorFinal'
+      Origin = 'caixa.caixa_valorFinal'
+    end
+    object SQL_caixacaixa_saldo: TFloatField
+      FieldName = 'caixa_saldo'
+      Origin = 'caixa.caixa_saldo'
+    end
+  end
+  object ds_caixa: TMyDataSource
+    DataSet = SQL_caixa
+    Left = 464
+    Top = 392
+  end
+  object SQL_fluxo: TMyQuery
+    SQLInsert.Strings = (
+      'INSERT INTO fluxo'
+      '  (fluxo_data, fluxo_tipo, fluxo_valor)'
+      'VALUES'
+      '  (:fluxo_data, :fluxo_tipo, :fluxo_valor)')
+    SQLDelete.Strings = (
+      'DELETE FROM fluxo'
+      'WHERE'
+      '  fluxo_id = :Old_fluxo_id')
+    SQLUpdate.Strings = (
+      'UPDATE fluxo'
+      'SET'
+      
+        '  fluxo_data = :fluxo_data, fluxo_tipo = :fluxo_tipo, fluxo_valo' +
+        'r = :fluxo_valor'
+      'WHERE'
+      '  fluxo_id = :Old_fluxo_id')
+    SQLRefresh.Strings = (
+      'SELECT fluxo_data, fluxo_tipo, fluxo_valor FROM fluxo'
+      'WHERE'
+      '  fluxo_id = :fluxo_id')
+    SQLLock.Strings = (
+      'SELECT * FROM fluxo'
+      'WHERE'
+      '  fluxo_id = :Old_fluxo_id'
+      'FOR UPDATE')
+    SQLRecCount.Strings = (
+      'SELECT COUNT(*) FROM fluxo')
+    Connection = con_banco
+    SQL.Strings = (
+      'select * from fluxo')
+    Active = True
+    Left = 464
+    Top = 464
+    object SQL_fluxofluxo_id: TIntegerField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'fluxo_id'
+      Origin = 'fluxo.fluxo_id'
+    end
+    object SQL_fluxofluxo_data: TDateField
+      FieldName = 'fluxo_data'
+      Origin = 'fluxo.fluxo_data'
+    end
+    object SQL_fluxofluxo_tipo: TIntegerField
+      FieldName = 'fluxo_tipo'
+      Origin = 'fluxo.fluxo_tipo'
+    end
+    object SQL_fluxofluxo_valor: TFloatField
+      FieldName = 'fluxo_valor'
+      Origin = 'fluxo.fluxo_valor'
+    end
+  end
+  object ds_fluxo: TMyDataSource
+    DataSet = SQL_fluxo
+    Left = 464
+    Top = 520
   end
 end
